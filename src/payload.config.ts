@@ -27,17 +27,18 @@ export default buildConfig({
   collections: [Users, Media, Services, Testimonials, Faqs],
   globals: [Homepage],
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: env.PAYLOAD_SECRET,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URL || '',
+      connectionString: env.DATABASE_URL,
     },
+    push: false,
   }),
   sharp,
-   plugins: [
+  plugins: [
     vercelBlobStorage({
       enabled: true, // Optional, defaults to true
       // Specify which collections should use Vercel Blob
