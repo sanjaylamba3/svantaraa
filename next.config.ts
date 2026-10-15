@@ -1,3 +1,4 @@
+import './src/env'
 import { withPayload } from '@payloadcms/next/withPayload'
 import type { NextConfig } from 'next'
 import path from 'path'
@@ -7,10 +8,27 @@ const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
+  transpilePackages: ['@t3-oss/env-nextjs', '@t3-oss/env-core'],
   images: {
     localPatterns: [
       {
         pathname: '/api/media/file/**',
+      },
+      {
+        pathname: '/media/**',
+      },
+      {
+        pathname: '/**',
+      },
+    ],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.public.blob.vercel-storage.com',
       },
     ],
   },
@@ -29,3 +47,4 @@ const nextConfig: NextConfig = {
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })
+
