@@ -13,12 +13,12 @@ export const Media: CollectionConfig = {
     description: 'Image and asset gallery used across properties, experiences, and pages.',
     defaultColumns: ['filename', 'alt', 'mimeType', 'filesize', 'updatedAt'],
   },
-  // access: {
-  //   read: () => true,
-  //   create: isAdminOrStaff,
-  //   update: isAdminOrStaff,
-  //   delete: isAdminOrStaff,
-  // },
+  access: {
+    read: () => true,
+    // create: isAdminOrStaff,
+    // update: isAdminOrStaff,
+    // delete: isAdminOrStaff,
+  },
   fields: [
     {
       name: 'alt',

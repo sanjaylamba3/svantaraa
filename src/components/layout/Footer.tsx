@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { IconMapPin, IconPhone } from '@tabler/icons-react'
+import Image from 'next/image'
 
 interface FooterProps {
   brandBio?: string
@@ -26,9 +27,16 @@ export function Footer({
           {/* Col 1: Brand & Contact Info */}
           <div className="lg:col-span-5 flex flex-col gap-4">
             <div className="flex flex-col">
-              <span className="font-serif text-2xl tracking-[0.14em] uppercase text-white font-medium">
-                Svantaraa
-              </span>
+             <Link href="/" className="flex items-center group">
+            <Image
+              src="/Svantaraa Logo Final.png"
+              alt="Svantaraa - Luxury Pet Retreat"
+              width={778}
+              height={104}
+              priority
+              className="h-7 bg-white sm:h-8 md:h-9 lg:h-10 w-auto object-contain transition-opacity group-hover:opacity-90 dark:brightness-0 dark:invert"
+            />
+          </Link>
               <span className="text-[10px] tracking-[0.22em] text-amber-300 uppercase font-semibold mt-1">
                 Sanctuary of Conscious Care
               </span>

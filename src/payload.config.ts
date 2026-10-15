@@ -35,7 +35,7 @@ export default buildConfig({
     pool: {
       connectionString: env.DATABASE_URL,
     },
-    push: false,
+    push:false,
   }),
   sharp,
   plugins: [
