@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { MobileNav } from './MobileNav'
 
@@ -33,15 +34,17 @@ export function Header({ phone = '+91 95999 08677' }: HeaderProps) {
           </a>
         </nav>
 
-        {/* Center: Brand wordmark */}
-        <div className="flex flex-col items-center justify-center text-center select-none py-1">
-          <Link href="/" className="flex flex-col items-center group">
-            <span className="font-serif text-2xl tracking-[0.16em] uppercase leading-tight font-medium text-foreground group-hover:opacity-90 transition-opacity">
-              Svantaraa
-            </span>
-            <span className="text-[10px] tracking-[0.24em] uppercase text-emerald-800 dark:text-emerald-400 font-semibold mt-0.5">
-              Luxury Pet Retreat
-            </span>
+        {/* Center: Brand logo */}
+        <div className="flex items-center justify-center select-none py-1">
+          <Link href="/" className="flex items-center group">
+            <Image
+              src="/Svantaraa Logo Final.png"
+              alt="Svantaraa - Luxury Pet Retreat"
+              width={778}
+              height={104}
+              priority
+              className="h-7 sm:h-8 md:h-9 lg:h-10 w-auto object-contain transition-opacity group-hover:opacity-90 dark:brightness-0 dark:invert"
+            />
           </Link>
         </div>
 
