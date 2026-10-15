@@ -1,59 +1,148 @@
-import { headers as getHeaders } from 'next/headers.js'
-import Image from 'next/image'
-import { getPayload } from 'payload'
 import React from 'react'
-import { fileURLToPath } from 'url'
-
+import { getPayload } from 'payload'
 import config from '@/payload.config'
-import './styles.css'
+import type { Homepage, Service, Testimonial, Faq } from '@/payload-types'
+
+import { HeroSection } from '@/components/home/HeroSection'
+import { PhilosophySection } from '@/components/home/PhilosophySection'
+import { ExperienceSection } from '@/components/home/ExperienceSection'
+import { DailyRhythmSection } from '@/components/home/DailyRhythmSection'
+import { PurposeSection } from '@/components/home/PurposeSection'
+import { TestimonialsSection } from '@/components/home/TestimonialsSection'
+import { FaqSection } from '@/components/home/FaqSection'
+import { BookingBanner } from '@/components/home/BookingBanner'
+
+export const revalidate = 60
 
 export default async function HomePage() {
-  const headers = await getHeaders()
   const payloadConfig = await config
   const payload = await getPayload({ config: payloadConfig })
-  const { user } = await payload.auth({ headers })
 
-  const fileURL = `vscode://file/${fileURLToPath(import.meta.url)}`
+  let homepageData: Homepage | null = null
+  let services: Service[] = []
+  let testimonials: Testimonial[] = []
+  let faqs: Faq[] = []
+
+  try {
+    homepageData = await payload.findGlobal({
+      slug: 'homepage',
+      depth: 1,
+    })
+  } catch (error) {
+    console.warn('Could not fetch homepage global data, using defaults:', error)
+  }
+
+  try {
+    const servicesRes = await payload.find({
+      collection: 'services',
+      sort: 'order',
+      depth: 1,
+    })
+    services = servicesRes.docs
+  } catch (error) {
+    console.warn('Could not fetch services, using defaults:', error)
+  }
+
+  try {
+    const testimonialsRes = await payload.find({
+      collection: 'testimonials',
+      sort: 'order',
+      depth: 1,
+    })
+    testimonials = testimonialsRes.docs
+  } catch (error) {
+    console.warn('Could not fetch testimonials, using defaults:', error)
+  }
+
+  try {
+    const faqsRes = await payload.find({
+      collection: 'faqs',
+      sort: 'order',
+      depth: 1,
+    })
+    faqs = faqsRes.docs
+  } catch (error) {
+    console.warn('Could not fetch faqs, using defaults:', error)
+  }
 
   return (
-    <div className="home">
-      <div className="content">
-        <picture>
-          <source srcSet="https://raw.githubusercontent.com/payloadcms/payload/3.x/packages/ui/src/assets/payload-favicon.svg" />
-          <Image
-            alt="Payload Logo"
-            height={65}
-            src="https://raw.githubusercontent.com/payloadcms/payload/3.x/packages/ui/src/assets/payload-favicon.svg"
-            width={65}
-          />
-        </picture>
-        {!user && <h1>Welcome to your new project.</h1>}
-        {user && <h1>Welcome back, {user.email}</h1>}
-        <div className="links">
-          <a
-            className="admin"
-            href={payloadConfig.routes.admin}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Go to admin panel
-          </a>
-          <a
-            className="docs"
-            href="https://payloadcms.com/docs"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Documentation
-          </a>
-        </div>
-      </div>
-      <div className="footer">
-        <p>Update this page by editing</p>
-        <a className="codeLink" href={fileURL}>
-          <code>app/(frontend)/page.tsx</code>
-        </a>
-      </div>
+    <div className="flex flex-col w-full">
+      {/* 1. Hero Section */}
+      <HeroSection
+        badge={homepageData?.heroBadge || undefined}
+        headline={homepageData?.heroHeadline || undefined}
+        description={homepageData?.heroDescription || undefined}
+        primaryCtaText={homepageData?.heroPrimaryCtaText || undefined}
+        primaryCtaLink={homepageData?.heroPrimaryCtaLink || undefined}
+        secondaryCtaText={homepageData?.heroSecondaryCtaText || undefined}
+        secondaryCtaLink={homepageData?.heroSecondaryCtaLink || undefined}
+        image={homepageData?.heroImage || null}
+        defaultImageUrl={homepageData?.heroDefaultImageUrl || undefined}
+      />
+
+      {/* 2. Philosophy & Welcome Section */}
+      <PhilosophySection
+        overline={homepageData?.philosophyOverline || undefined}
+        quote={homepageData?.philosophyQuote || undefined}
+        description={homepageData?.philosophyDescription || undefined}
+        pillars={homepageData?.philosophyPillars || null}
+      />
+
+      {/* 3. Bespoke Offerings & Experience Cards */}
+      <ExperienceSection
+        overline={homepageData?.servicesOverline || undefined}
+        heading={homepageData?.servicesHeading || undefined}
+        description={homepageData?.servicesDescription || undefined}
+        compareText={homepageData?.servicesCompareText || undefined}
+        compareLink={homepageData?.servicesCompareLink || undefined}
+        services={services}
+      />
+
+      {/* 4. Daily Rhythm at the Sanctuary */}
+      <DailyRhythmSection
+        overline={homepageData?.rhythmOverline || undefined}
+        heading={homepageData?.rhythmHeading || undefined}
+        description={homepageData?.rhythmDescription || undefined}
+        schedule={homepageData?.rhythmSchedule || null}
+        photo1={homepageData?.rhythmPhoto1 || null}
+        photo1DefaultUrl={homepageData?.rhythmPhoto1DefaultUrl || undefined}
+        photo2={homepageData?.rhythmPhoto2 || null}
+        photo2DefaultUrl={homepageData?.rhythmPhoto2DefaultUrl || undefined}
+      />
+
+      {/* 5. Boarding With Purpose (Social Impact) */}
+      <PurposeSection
+        badge={homepageData?.purposeBadge || undefined}
+        heading={homepageData?.purposeHeading || undefined}
+        narrative={homepageData?.purposeNarrative || undefined}
+        founderTitle={homepageData?.founderTitle || undefined}
+        founderName={homepageData?.founderName || undefined}
+        founderRole={homepageData?.founderRole || undefined}
+        founderPhoto={homepageData?.founderPhoto || null}
+        founderDefaultPhotoUrl={homepageData?.founderDefaultPhotoUrl || undefined}
+        metrics={homepageData?.purposeMetrics || null}
+        ctaText={homepageData?.purposeCtaText || undefined}
+        ctaLink={homepageData?.purposeCtaLink || undefined}
+        footnote={homepageData?.purposeFootnote || undefined}
+      />
+
+      {/* 6. Discerning Pet Parent Testimonials */}
+      <TestimonialsSection testimonials={testimonials} />
+
+      {/* 7. Frequently Addressed Inquiries (Accordion FAQ) */}
+      <FaqSection faqs={faqs} />
+
+      {/* 8. Pre-Footer Booking Invitation Banner */}
+      <BookingBanner
+        badge={homepageData?.bookingBadge || undefined}
+        heading={homepageData?.bookingHeading || undefined}
+        description={homepageData?.bookingDescription || undefined}
+        primaryCtaText={homepageData?.bookingPrimaryCtaText || undefined}
+        primaryCtaLink={homepageData?.bookingPrimaryCtaLink || undefined}
+        secondaryCtaText={homepageData?.bookingSecondaryCtaText || undefined}
+        secondaryCtaLink={homepageData?.bookingSecondaryCtaLink || undefined}
+        conciergeContact={homepageData?.conciergeContact || undefined}
+      />
     </div>
   )
 }

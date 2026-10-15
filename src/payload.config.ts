@@ -4,9 +4,15 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
+import { env } from '@/env';
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { Services } from './collections/Services'
+import { Testimonials } from './collections/Testimonials'
+import { Faqs } from './collections/Faqs'
+import { Homepage } from './globals/Homepage'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -18,7 +24,8 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [Users, Media, Services, Testimonials, Faqs],
+  globals: [Homepage],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -30,5 +37,17 @@ export default buildConfig({
     },
   }),
   sharp,
-  plugins: [],
+   plugins: [
+    vercelBlobStorage({
+      enabled: true, // Optional, defaults to true
+      // Specify which collections should use Vercel Blob
+     collections: {
+        media: {
+          disablePayloadAccessControl: true,
+        },
+      },
+      clientUploads: true,
+      token: env.BLOB_READ_WRITE_TOKEN,
+    }),
+  ],
 })

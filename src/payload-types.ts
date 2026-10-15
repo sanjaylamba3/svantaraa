@@ -69,6 +69,9 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    services: Service;
+    testimonials: Testimonial;
+    faqs: Faq;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,17 +81,24 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    services: ServicesSelect<false> | ServicesSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    faqs: FaqsSelect<false> | FaqsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    homepage: Homepage;
+  };
+  globalsSelect: {
+    homepage: HomepageSelect<false> | HomepageSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -122,7 +132,7 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -130,6 +140,7 @@ export interface User {
   resetPasswordExpiration?: string | null;
   salt?: string | null;
   hash?: string | null;
+  resetPasswordRequestedAt?: string | null;
   loginAttempts?: number | null;
   lockUntil?: string | null;
   sessions?:
@@ -147,7 +158,7 @@ export interface User {
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: number;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -163,10 +174,96 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: number;
+  title: string;
+  /**
+   * e.g. Signature Chalet, Social & Sensory, Private Access
+   */
+  badge?: string | null;
+  /**
+   * Bottom-right photo badge, e.g. 100% Private Patio, Matched Temperaments
+   */
+  featureTag?: string | null;
+  description: string;
+  price: number;
+  /**
+   * e.g. / night, / 5 hrs, / 2 hrs
+   */
+  priceUnit?: string | null;
+  /**
+   * Overline above price, e.g. Per Night Stay, Daycare Session, Park Pass
+   */
+  priceLabel?: string | null;
+  image?: (number | null) | Media;
+  /**
+   * Fallback image URL if no media uploaded
+   */
+  defaultImageUrl?: string | null;
+  features?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  ctaText?: string | null;
+  ctaLink?: string | null;
+  /**
+   * Order of display on homepage
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  ownerName: string;
+  /**
+   * e.g. Parents of Bruno • 4-Year Golden Retriever
+   */
+  petName: string;
+  /**
+   * Avatar initials (e.g. RS, AK, TM). If blank, generated from owner name.
+   */
+  initials?: string | null;
+  rating?: number | null;
+  quote: string;
+  avatar?: (number | null) | Media;
+  /**
+   * Display order on homepage
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs".
+ */
+export interface Faq {
+  id: number;
+  question: string;
+  answer: string;
+  category?: ('general' | 'boarding' | 'health' | 'daycare') | null;
+  /**
+   * Display order on homepage
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string;
+  id: number;
   key: string;
   data:
     | {
@@ -183,20 +280,32 @@ export interface PayloadKv {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
         relationTo: 'users';
-        value: string | User;
+        value: number | User;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'services';
+        value: number | Service;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: number | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'faqs';
+        value: number | Faq;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -206,10 +315,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -229,7 +338,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -247,6 +356,7 @@ export interface UsersSelect<T extends boolean = true> {
   resetPasswordExpiration?: T;
   salt?: T;
   hash?: T;
+  resetPasswordRequestedAt?: T;
   loginAttempts?: T;
   lockUntil?: T;
   sessions?:
@@ -274,6 +384,59 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services_select".
+ */
+export interface ServicesSelect<T extends boolean = true> {
+  title?: T;
+  badge?: T;
+  featureTag?: T;
+  description?: T;
+  price?: T;
+  priceUnit?: T;
+  priceLabel?: T;
+  image?: T;
+  defaultImageUrl?: T;
+  features?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  ctaText?: T;
+  ctaLink?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  ownerName?: T;
+  petName?: T;
+  initials?: T;
+  rating?: T;
+  quote?: T;
+  avatar?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs_select".
+ */
+export interface FaqsSelect<T extends boolean = true> {
+  question?: T;
+  answer?: T;
+  category?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -314,6 +477,172 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage".
+ */
+export interface Homepage {
+  id: number;
+  heroBadge?: string | null;
+  heroHeadline: string;
+  heroDescription: string;
+  heroPrimaryCtaText?: string | null;
+  heroPrimaryCtaLink?: string | null;
+  heroSecondaryCtaText?: string | null;
+  heroSecondaryCtaLink?: string | null;
+  heroImage?: (number | null) | Media;
+  heroDefaultImageUrl?: string | null;
+  philosophyOverline?: string | null;
+  philosophyQuote: string;
+  philosophyDescription?: string | null;
+  philosophyPillars?:
+    | {
+        title: string;
+        description: string;
+        icon?: ('leaf' | 'video' | 'heartbeat') | null;
+        id?: string | null;
+      }[]
+    | null;
+  servicesOverline?: string | null;
+  servicesHeading?: string | null;
+  servicesDescription?: string | null;
+  servicesCompareText?: string | null;
+  servicesCompareLink?: string | null;
+  rhythmOverline?: string | null;
+  rhythmHeading?: string | null;
+  rhythmDescription?: string | null;
+  rhythmSchedule?:
+    | {
+        time: string;
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  rhythmPhoto1?: (number | null) | Media;
+  rhythmPhoto1DefaultUrl?: string | null;
+  rhythmPhoto2?: (number | null) | Media;
+  rhythmPhoto2DefaultUrl?: string | null;
+  purposeBadge?: string | null;
+  purposeHeading?: string | null;
+  purposeNarrative?: string | null;
+  founderTitle?: string | null;
+  founderName?: string | null;
+  founderRole?: string | null;
+  founderPhoto?: (number | null) | Media;
+  founderDefaultPhotoUrl?: string | null;
+  purposeMetrics?:
+    | {
+        value: string;
+        label?: string | null;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  purposeCtaText?: string | null;
+  purposeCtaLink?: string | null;
+  purposeFootnote?: string | null;
+  bookingBadge?: string | null;
+  bookingHeading?: string | null;
+  bookingDescription?: string | null;
+  bookingPrimaryCtaText?: string | null;
+  bookingPrimaryCtaLink?: string | null;
+  bookingSecondaryCtaText?: string | null;
+  bookingSecondaryCtaLink?: string | null;
+  conciergeContact?: string | null;
+  brandTagline?: string | null;
+  brandBio?: string | null;
+  address?: string | null;
+  phone?: string | null;
+  hoursBoarding?: string | null;
+  hoursDaycare?: string | null;
+  hoursDogPark?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage_select".
+ */
+export interface HomepageSelect<T extends boolean = true> {
+  heroBadge?: T;
+  heroHeadline?: T;
+  heroDescription?: T;
+  heroPrimaryCtaText?: T;
+  heroPrimaryCtaLink?: T;
+  heroSecondaryCtaText?: T;
+  heroSecondaryCtaLink?: T;
+  heroImage?: T;
+  heroDefaultImageUrl?: T;
+  philosophyOverline?: T;
+  philosophyQuote?: T;
+  philosophyDescription?: T;
+  philosophyPillars?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        icon?: T;
+        id?: T;
+      };
+  servicesOverline?: T;
+  servicesHeading?: T;
+  servicesDescription?: T;
+  servicesCompareText?: T;
+  servicesCompareLink?: T;
+  rhythmOverline?: T;
+  rhythmHeading?: T;
+  rhythmDescription?: T;
+  rhythmSchedule?:
+    | T
+    | {
+        time?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  rhythmPhoto1?: T;
+  rhythmPhoto1DefaultUrl?: T;
+  rhythmPhoto2?: T;
+  rhythmPhoto2DefaultUrl?: T;
+  purposeBadge?: T;
+  purposeHeading?: T;
+  purposeNarrative?: T;
+  founderTitle?: T;
+  founderName?: T;
+  founderRole?: T;
+  founderPhoto?: T;
+  founderDefaultPhotoUrl?: T;
+  purposeMetrics?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        description?: T;
+        id?: T;
+      };
+  purposeCtaText?: T;
+  purposeCtaLink?: T;
+  purposeFootnote?: T;
+  bookingBadge?: T;
+  bookingHeading?: T;
+  bookingDescription?: T;
+  bookingPrimaryCtaText?: T;
+  bookingPrimaryCtaLink?: T;
+  bookingSecondaryCtaText?: T;
+  bookingSecondaryCtaLink?: T;
+  conciergeContact?: T;
+  brandTagline?: T;
+  brandBio?: T;
+  address?: T;
+  phone?: T;
+  hoursBoarding?: T;
+  hoursDaycare?: T;
+  hoursDogPark?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
