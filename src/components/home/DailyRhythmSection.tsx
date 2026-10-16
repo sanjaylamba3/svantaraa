@@ -66,9 +66,9 @@ export function DailyRhythmSection({
   description = 'Dogs thrive on predictable, calm structure. Our daily cadence balances energizing outdoor exploration with restorative sensory quietude.',
   schedule,
   photo1,
-  photo1DefaultUrl = 'https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=800&q=80',
+  photo1DefaultUrl = '/boarding-with-purpose-1.avif',
   photo2,
-  photo2DefaultUrl = 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=800&q=80',
+  photo2DefaultUrl = '/boarding-with-purpose-2.avif',
 }: DailyRhythmSectionProps) {
   const activeSchedule = schedule && schedule.length > 0 ? schedule : defaultSchedule
   const img1Url = getMediaUrl(photo1, photo1DefaultUrl)
