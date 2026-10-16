@@ -13,3 +13,13 @@ export function getMediaUrl(
   }
   return fallbackUrl
 }
+
+export function getMediaAlt(
+  media: string | number | Media | null | undefined,
+  fallback: string,
+): string {
+  if (typeof media === 'object' && media !== null && media.alt) {
+    return media.alt
+  }
+  return fallback
+}

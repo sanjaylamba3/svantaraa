@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 import {
   IconArrowRight,
   IconPaw,
@@ -6,7 +7,7 @@ import {
   IconHeartHandshake,
 } from '@tabler/icons-react'
 import { Button } from '@/components/ui/button'
-import { getMediaUrl } from '@/lib/media'
+import { getMediaAlt, getMediaUrl } from '@/lib/media'
 import type { Media } from '@/payload-types'
 
 interface MetricItem {
@@ -64,79 +65,75 @@ export function PurposeSection({
 }: PurposeSectionProps) {
   const activeMetrics = metrics && metrics.length > 0 ? metrics : defaultMetrics
   const founderImgUrl = getMediaUrl(founderPhoto, founderDefaultPhotoUrl)
+  const founderAlt = getMediaAlt(founderPhoto, `${founderName} - ${founderRole}`)
 
   const getMetricIcon = (index: number) => {
     switch (index) {
       case 0:
-        return <IconPaw className="size-7 text-amber-300" />
+        return <IconPaw className="size-7 text-champagne" aria-hidden />
       case 1:
-        return <IconBandage className="size-7 text-amber-300" />
+        return <IconBandage className="size-7 text-champagne" aria-hidden />
       case 2:
       default:
-        return <IconHeartHandshake className="size-7 text-amber-300" />
+        return <IconHeartHandshake className="size-7 text-champagne" aria-hidden />
     }
   }
 
   return (
     <section
-      className="w-full bg-neutral-950 text-white py-20 md:py-28 relative overflow-hidden"
+      className="w-full bg-espresso text-ivory py-20 md:py-28 relative overflow-hidden"
       id="social-impact"
     >
-      {/* Background glow orb */}
-      <div className="absolute -right-20 -bottom-20 w-96 h-96 bg-emerald-900/30 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -right-20 -bottom-20 w-96 h-96 bg-forest/30 rounded-full blur-3xl pointer-events-none" />
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Portrait & Founder Card */}
           <div className="lg:col-span-5 relative">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-neutral-900 border border-neutral-800">
-              <img
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-cocoa border border-border-dark">
+              <Image
                 src={founderImgUrl}
-                alt={`${founderName} - ${founderRole}`}
+                alt={founderAlt}
+                width={800}
+                height={920}
                 className="w-full h-[460px] object-cover"
+                sizes="(max-width: 1024px) 100vw, 40vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-espresso via-espresso/20 to-transparent" />
               <div className="absolute bottom-6 left-6 right-6">
-                <span className="text-[11px] uppercase tracking-[0.2em] text-amber-300 font-semibold">
+                <span className="text-[11px] uppercase tracking-[0.2em] text-champagne font-semibold">
                   {founderTitle}
                 </span>
-                <h3 className="font-serif text-2xl text-white mt-0.5">
-                  {founderName}
-                </h3>
-                <p className="text-xs text-neutral-300 mt-0.5 font-light">
-                  {founderRole}
-                </p>
+                <h3 className="font-serif text-2xl text-ivory mt-0.5">{founderName}</h3>
+                <p className="text-xs text-mist mt-0.5 font-light">{founderRole}</p>
               </div>
             </div>
           </div>
 
-          {/* Narrative & Live Metrics Bento */}
           <div className="lg:col-span-7 flex flex-col gap-8">
             <div className="flex flex-col gap-2">
-              <span className="text-xs uppercase tracking-[0.2em] text-amber-300 font-semibold">
+              <span className="text-xs uppercase tracking-[0.2em] text-champagne font-semibold">
                 {badge}
               </span>
-              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl leading-tight text-white">
+              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl leading-tight text-ivory">
                 {heading}
               </h2>
-              <p className="text-base sm:text-lg text-neutral-300 leading-relaxed font-light mt-2">
+              <p className="text-base sm:text-lg text-mist leading-relaxed font-light mt-2">
                 {narrative}
               </p>
             </div>
 
-            {/* Impact Metrics Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
               {activeMetrics.map((m, idx) => (
                 <div
                   key={idx}
-                  className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-5 flex flex-col justify-between"
+                  className="bg-ivory/5 backdrop-blur-md border border-border-dark rounded-2xl p-5 flex flex-col justify-between"
                 >
                   {getMetricIcon(idx)}
                   <div className="mt-4">
-                    <span className="font-serif text-2xl sm:text-3xl font-bold text-white tracking-tight">
+                    <span className="font-serif text-2xl sm:text-3xl font-bold text-ivory tracking-tight">
                       {m.value}
                     </span>
-                    <span className="block text-xs text-neutral-300 mt-1 leading-relaxed">
+                    <span className="block text-xs text-mist mt-1 leading-relaxed">
                       {m.description}
                     </span>
                   </div>
@@ -144,20 +141,17 @@ export function PurposeSection({
               ))}
             </div>
 
-            {/* CTA & footnote */}
             <div className="pt-2 flex flex-col sm:flex-row sm:items-center gap-4">
               <a href={ctaLink}>
                 <Button
                   size="lg"
-                  className="bg-emerald-800 hover:bg-emerald-700 text-white rounded-full px-6 py-3 text-xs uppercase tracking-wider font-semibold shadow-md flex items-center gap-2"
+                  className="rounded-full px-6 py-3 text-xs uppercase tracking-wider font-semibold shadow-md flex items-center gap-2 bg-ivory text-espresso hover:bg-ivory/90"
                 >
                   <span>{ctaText}</span>
                   <IconArrowRight className="size-4" />
                 </Button>
               </a>
-              <span className="text-xs text-neutral-400">
-                {footnote}
-              </span>
+              <span className="text-xs text-mist">{footnote}</span>
             </div>
           </div>
         </div>

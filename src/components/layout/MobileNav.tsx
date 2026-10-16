@@ -10,13 +10,15 @@ import {
 } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
 import { IconMenu2, IconPhone } from '@tabler/icons-react'
+import { DEFAULT_PHONE, primaryNavLinks } from '@/lib/site'
 
 interface MobileNavProps {
   phone?: string
 }
 
-export function MobileNav({ phone = '+91 95999 08677' }: MobileNavProps) {
+export function MobileNav({ phone = DEFAULT_PHONE }: MobileNavProps) {
   const [open, setOpen] = useState(false)
+  const phoneHref = `tel:${phone.replace(/\s+/g, '')}`
 
   const handleLinkClick = () => {
     setOpen(false)
@@ -48,41 +50,24 @@ export function MobileNav({ phone = '+91 95999 08677' }: MobileNavProps) {
               </span>
             </SheetHeader>
 
-            <nav className="flex flex-col gap-4 text-sm font-medium tracking-wider uppercase">
+            <nav className="flex flex-col gap-4 text-sm font-medium tracking-wider uppercase" aria-label="Primary">
+              {primaryNavLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={handleLinkClick}
+                  className="py-2 text-foreground/80 hover:text-foreground transition-colors"
+                >
+                  {link.label}
+                </a>
+              ))}
               <a
-                href="#reserve-concierge"
+                href={phoneHref}
                 onClick={handleLinkClick}
-                className="py-2 text-foreground/80 hover:text-foreground transition-colors"
+                className="py-2 flex items-center gap-2 text-foreground/80 hover:text-foreground transition-colors normal-case tracking-normal"
+                aria-label={`Call us at ${phone}`}
               >
-                Services & Chalets
-              </a>
-              <a
-                href="#daily-rhythm"
-                onClick={handleLinkClick}
-                className="py-2 text-foreground/80 hover:text-foreground transition-colors"
-              >
-                Daily Rhythm
-              </a>
-              <a
-                href="#social-impact"
-                onClick={handleLinkClick}
-                className="py-2 text-foreground/80 hover:text-foreground transition-colors"
-              >
-                Rescue Mission
-              </a>
-              <a
-                href="#faq-section"
-                onClick={handleLinkClick}
-                className="py-2 text-foreground/80 hover:text-foreground transition-colors"
-              >
-                Resident FAQs
-              </a>
-              <a
-                href={`tel:${phone.replace(/\s+/g, '')}`}
-                onClick={handleLinkClick}
-                className="py-2 flex items-center gap-2 text-foreground/80 hover:text-foreground transition-colors"
-              >
-                <IconPhone className="size-4" />
+                <IconPhone className="size-4 shrink-0" aria-hidden />
                 <span>{phone}</span>
               </a>
             </nav>
@@ -97,7 +82,7 @@ export function MobileNav({ phone = '+91 95999 08677' }: MobileNavProps) {
                 if (el) el.scrollIntoView({ behavior: 'smooth' })
               }}
             >
-              Reserve Stay
+              Reserve
             </Button>
             <p className="text-[11px] text-center text-muted-foreground">
               Gurugram Sanctuary • 100% Cage-Free

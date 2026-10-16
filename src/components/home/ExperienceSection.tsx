@@ -1,11 +1,13 @@
 import React from 'react'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import {
   IconArrowUpRight,
   IconDiscountCheck,
   IconCheck,
 } from '@tabler/icons-react'
-import { getMediaUrl } from '@/lib/media'
+import { getMediaAlt, getMediaUrl } from '@/lib/media'
+import { isExternalBookingUrl } from '@/lib/site'
 import type { Service } from '@/payload-types'
 
 interface ExperienceSectionProps {
@@ -17,7 +19,23 @@ interface ExperienceSectionProps {
   services?: Service[]
 }
 
-const defaultFallbackServices = [
+type FallbackService = {
+  id: string
+  title: string
+  badge: string
+  featureTag: string
+  description: string
+  price: number
+  priceUnit: string
+  priceLabel: string
+  defaultImageUrl: string
+  features: { text: string }[]
+  ctaText?: string
+  ctaLink?: string | null
+  image?: Service['image']
+}
+
+const defaultFallbackServices: FallbackService[] = [
   {
     id: 'default-1',
     title: 'Luxury Boarding Chalets',
@@ -35,7 +53,6 @@ const defaultFallbackServices = [
       { text: 'Orthopedic medical-grade memory foam rest' },
     ],
     ctaText: 'Book Now',
-    ctaLink: '#reserve-concierge',
   },
   {
     id: 'default-2',
@@ -54,7 +71,6 @@ const defaultFallbackServices = [
       { text: 'Cooling splash pad activities in warm afternoons' },
     ],
     ctaText: 'Book Now',
-    ctaLink: '#reserve-concierge',
   },
   {
     id: 'default-3',
@@ -73,9 +89,10 @@ const defaultFallbackServices = [
       { text: 'Shaded lounge with cold-pressed beverages' },
     ],
     ctaText: 'Book Now',
-    ctaLink: '#reserve-concierge',
   },
 ]
+
+type ExperienceItem = Service | FallbackService
 
 export function ExperienceSection({
   overline = 'Bespoke Offerings',
@@ -85,122 +102,120 @@ export function ExperienceSection({
   compareLink = '#reserve-concierge',
   services,
 }: ExperienceSectionProps) {
-  const items = services && services.length > 0 ? services : defaultFallbackServices
+  const items: ExperienceItem[] =
+    services && services.length > 0 ? services : defaultFallbackServices
 
   return (
     <section className="w-full bg-muted/40 py-20 md:py-24" id="reserve-concierge">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col gap-12">
-        {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="flex flex-col gap-1 max-w-xl">
-            <span className="text-xs uppercase tracking-[0.2em] text-emerald-800 dark:text-emerald-400 font-semibold">
+            <span className="text-xs uppercase tracking-[0.2em] text-forest font-semibold">
               {overline}
             </span>
-            <h2 className="font-serif text-3xl sm:text-4xl text-foreground">
-              {heading}
-            </h2>
-            <p className="text-sm sm:text-base text-muted-foreground mt-1">
-              {description}
-            </p>
+            <h2 className="font-serif text-3xl sm:text-4xl text-foreground">{heading}</h2>
+            <p className="text-sm sm:text-base text-muted-foreground mt-1">{description}</p>
           </div>
 
           <a
             href={compareLink}
-            className="inline-flex items-center gap-1.5 text-xs text-emerald-800 dark:text-emerald-400 hover:text-foreground transition-colors font-semibold uppercase tracking-wider group"
+            className="inline-flex items-center gap-1.5 text-xs text-forest hover:text-foreground transition-colors font-semibold uppercase tracking-wider group"
           >
             <span>{compareText}</span>
             <IconArrowUpRight className="size-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </a>
         </div>
 
-        {/* Experience Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {items.map((item: any) => {
-            const imageUrl = getMediaUrl(item.image, item.defaultImageUrl)
-            const formattedPrice = item.price ? `₹${item.price.toLocaleString('en-IN')}` : ''
+            {items.map((item) => {
+              const imageUrl = getMediaUrl(item.image, item.defaultImageUrl ?? '')
+              const imageAlt = getMediaAlt(item.image, item.title)
+              const formattedPrice = item.price ? `₹${item.price.toLocaleString('en-IN')}` : ''
+              const bookingUrl = item.ctaLink
+              const showBooking = isExternalBookingUrl(bookingUrl)
+              const itemKey = typeof item.id === 'number' ? item.id : item.id
 
-            return (
-              <div
-                key={item.id || item.title}
-                className="group bg-card text-card-foreground rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-border/50 flex flex-col"
-              >
-                {/* Photo with Overlay Badges */}
-                <div className="relative h-64 overflow-hidden bg-neutral-100 dark:bg-neutral-800">
-                  <img
-                    src={imageUrl}
-                    alt={item.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
+              return (
+                <div
+                  key={itemKey}
+                  className="group bg-card text-card-foreground rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 border border-border flex flex-col"
+                >
+                  <div className="relative h-64 overflow-hidden bg-muted">
+                    <Image
+                      src={imageUrl}
+                      alt={imageAlt}
+                      width={640}
+                      height={256}
+                      className="w-full h-full object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
 
-                  {/* Top-left chip */}
-                  {item.badge && (
-                    <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 rounded-full bg-background/90 backdrop-blur-md text-[11px] text-emerald-800 dark:text-emerald-400 tracking-widest uppercase font-semibold shadow-xs">
-                        {item.badge}
-                      </span>
-                    </div>
-                  )}
+                    {item.badge && (
+                      <div className="absolute top-4 left-4">
+                        <span className="px-3 py-1 rounded-full bg-background/90 backdrop-blur-md text-[11px] text-forest tracking-widest uppercase font-semibold shadow-xs">
+                          {item.badge}
+                        </span>
+                      </div>
+                    )}
 
-                  {/* Bottom-right feature tag */}
-                  {item.featureTag && (
-                    <div className="absolute bottom-4 right-4 bg-neutral-900/85 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg flex items-center gap-1.5 text-xs">
-                      <IconDiscountCheck className="size-4 text-amber-300 shrink-0" />
-                      <span>{item.featureTag}</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Content */}
-                <div className="p-6 flex-1 flex flex-col justify-between gap-6">
-                  <div className="flex flex-col gap-3">
-                    <h3 className="font-serif text-2xl text-foreground group-hover:text-emerald-800 dark:group-hover:text-emerald-400 transition-colors">
-                      {item.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {item.description}
-                    </p>
-
-                    {/* Features list */}
-                    {item.features && item.features.length > 0 && (
-                      <ul className="pt-2 flex flex-col gap-2 text-xs text-muted-foreground">
-                        {item.features.map((f: any, fIdx: number) => (
-                          <li key={fIdx} className="flex items-center gap-2">
-                            <IconCheck className="size-4 text-emerald-700 dark:text-emerald-400 shrink-0" />
-                            <span>{f.text || f}</span>
-                          </li>
-                        ))}
-                      </ul>
+                    {item.featureTag && (
+                      <div className="absolute bottom-4 right-4 bg-espresso/85 backdrop-blur-sm text-ivory px-3 py-1.5 rounded-lg flex items-center gap-1.5 text-xs">
+                        <IconDiscountCheck className="size-4 text-champagne shrink-0" aria-hidden />
+                        <span>{item.featureTag}</span>
+                      </div>
                     )}
                   </div>
 
-                  {/* Pricing & CTA */}
-                  <div className="pt-4 border-t border-border/50 flex items-center justify-between">
-                    <div className="flex flex-col">
-                      <span className="text-[10px] uppercase text-muted-foreground tracking-wider font-medium">
-                        {item.priceLabel || 'Per Night Stay'}
-                      </span>
-                      <span className="text-xl font-bold tracking-tight text-foreground">
-                        {formattedPrice}{' '}
-                        <span className="text-xs text-muted-foreground font-normal">
-                          {item.priceUnit}
-                        </span>
-                      </span>
+                  <div className="p-6 flex-1 flex flex-col justify-between gap-6">
+                    <div className="flex flex-col gap-3">
+                      <h3 className="font-serif text-2xl text-foreground group-hover:text-forest transition-colors">
+                        {item.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        {item.description}
+                      </p>
+
+                      {item.features && item.features.length > 0 && (
+                        <ul className="pt-2 flex flex-col gap-2 text-xs text-muted-foreground">
+                          {item.features.map((feature, fIdx) => (
+                            <li key={fIdx} className="flex items-center gap-2">
+                              <IconCheck className="size-4 text-forest shrink-0" aria-hidden />
+                              <span>{feature.text}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </div>
 
-                    <a href={item.ctaLink || '#reserve-concierge'}>
-                      <Button
-                        size="sm"
-                        className="rounded-full px-5 py-2 text-xs tracking-wider uppercase font-semibold shadow-xs hover:scale-105 transition-transform"
-                      >
-                        {item.ctaText || 'Select Suite'}
-                      </Button>
-                    </a>
+                    <div className="pt-4 border-t border-border flex items-center justify-between gap-4">
+                      <div className="flex flex-col">
+                        <span className="text-[10px] uppercase text-muted-foreground tracking-wider font-medium">
+                          {item.priceLabel || 'Per Night Stay'}
+                        </span>
+                        <span className="text-xl font-bold tracking-tight text-foreground">
+                          {formattedPrice}{' '}
+                          <span className="text-xs text-muted-foreground font-normal">
+                            {item.priceUnit}
+                          </span>
+                        </span>
+                      </div>
+
+                      {showBooking && bookingUrl ? (
+                        <a href={bookingUrl} target="_blank" rel="noopener noreferrer">
+                          <Button
+                            size="sm"
+                            className="rounded-full px-5 py-2 text-xs tracking-wider uppercase font-semibold shadow-xs"
+                          >
+                            {item.ctaText || 'Select Suite'}
+                          </Button>
+                        </a>
+                      ) : null}
+                    </div>
                   </div>
                 </div>
-              </div>
-            )
-          })}
-        </div>
+              )
+            })}
+          </div>
       </div>
     </section>
   )

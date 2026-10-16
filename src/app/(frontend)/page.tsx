@@ -18,9 +18,9 @@ export default async function HomePage() {
   const payload = await getPayload({ config: payloadConfig })
 
   let homepageData: Homepage | null = null
-  let services: Service[] = []
-  let testimonials: Testimonial[] = []
-  let faqs: Faq[] = []
+  let services: Service[] | undefined
+  let testimonials: Testimonial[] | undefined
+  let faqs: Faq[] | undefined
 
   try {
     homepageData = await payload.findGlobal({
@@ -66,7 +66,6 @@ export default async function HomePage() {
 
   return (
     <div className="flex flex-col w-full">
-      {/* 1. Hero Section */}
       <HeroSection
         badge={homepageData?.heroBadge || undefined}
         headline={homepageData?.heroHeadline || undefined}
@@ -79,7 +78,6 @@ export default async function HomePage() {
         defaultImageUrl={homepageData?.heroDefaultImageUrl || undefined}
       />
 
-      {/* 2. Philosophy & Welcome Section */}
       <PhilosophySection
         overline={homepageData?.philosophyOverline || undefined}
         quote={homepageData?.philosophyQuote || undefined}
@@ -87,7 +85,6 @@ export default async function HomePage() {
         pillars={homepageData?.philosophyPillars || null}
       />
 
-      {/* 3. Bespoke Offerings & Experience Cards */}
       <ExperienceSection
         overline={homepageData?.servicesOverline || undefined}
         heading={homepageData?.servicesHeading || undefined}
@@ -97,7 +94,6 @@ export default async function HomePage() {
         services={services}
       />
 
-      {/* 4. Daily Rhythm at the Sanctuary */}
       <DailyRhythmSection
         overline={homepageData?.rhythmOverline || undefined}
         heading={homepageData?.rhythmHeading || undefined}
@@ -109,7 +105,6 @@ export default async function HomePage() {
         photo2DefaultUrl={homepageData?.rhythmPhoto2DefaultUrl || undefined}
       />
 
-      {/* 5. Boarding With Purpose (Social Impact) */}
       <PurposeSection
         badge={homepageData?.purposeBadge || undefined}
         heading={homepageData?.purposeHeading || undefined}
@@ -125,13 +120,10 @@ export default async function HomePage() {
         footnote={homepageData?.purposeFootnote || undefined}
       />
 
-      {/* 6. Discerning Pet Parent Testimonials */}
       <TestimonialsSection testimonials={testimonials} />
 
-      {/* 7. Frequently Addressed Inquiries (Accordion FAQ) */}
       <FaqSection faqs={faqs} />
 
-      {/* 8. Pre-Footer Booking Invitation Banner */}
       <BookingBanner
         badge={homepageData?.bookingBadge || undefined}
         heading={homepageData?.bookingHeading || undefined}

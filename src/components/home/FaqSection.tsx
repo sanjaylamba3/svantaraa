@@ -11,7 +11,13 @@ interface FaqSectionProps {
   faqs?: Faq[]
 }
 
-const defaultFaqs = [
+type FallbackFaq = {
+  id: string
+  question: string
+  answer: string
+}
+
+const defaultFaqs: FallbackFaq[] = [
   {
     id: 'faq-1',
     question: 'What vaccinations are strictly mandatory prior to check-in?',
@@ -38,13 +44,15 @@ const defaultFaqs = [
   },
 ]
 
+type FaqItem = Faq | FallbackFaq
+
 export function FaqSection({
   overline = 'Resident Protocol',
   heading = 'Frequently Addressed Inquiries',
   description = 'Every protocol is established to ensure maximum immunity, emotional safety, and harmony across the retreat.',
   faqs,
 }: FaqSectionProps) {
-  const items = faqs && faqs.length > 0 ? faqs : defaultFaqs
+  const items: FaqItem[] = faqs && faqs.length > 0 ? faqs : defaultFaqs
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   const toggle = (index: number) => {
@@ -54,51 +62,57 @@ export function FaqSection({
   return (
     <section className="w-full bg-muted/40 py-20 md:py-24" id="faq-section">
       <div className="w-full max-w-3xl mx-auto px-4 sm:px-6">
-        {/* Header */}
         <div className="text-center mb-12">
-          <span className="text-xs uppercase tracking-[0.24em] text-emerald-800 dark:text-emerald-400 font-semibold">
+          <span className="text-xs uppercase tracking-[0.24em] text-forest font-semibold">
             {overline}
           </span>
-          <h2 className="font-serif text-3xl sm:text-4xl text-foreground mt-1">
-            {heading}
-          </h2>
+          <h2 className="font-serif text-3xl sm:text-4xl text-foreground mt-1">{heading}</h2>
           <p className="text-sm sm:text-base text-muted-foreground mt-2 leading-relaxed">
             {description}
           </p>
         </div>
 
-        {/* Accordion list */}
         <div className="flex flex-col gap-3">
-          {items.map((item: any, idx: number) => {
-            const isOpen = openIndex === idx
+            {items.map((item, idx) => {
+              const isOpen = openIndex === idx
+              const panelId = `faq-panel-${item.id ?? idx}`
+              const triggerId = `faq-trigger-${item.id ?? idx}`
 
-            return (
-              <div
-                key={item.id || idx}
-                className="bg-card text-card-foreground rounded-2xl overflow-hidden shadow-xs border border-border/50 transition-all"
-              >
-                <button
-                  type="button"
-                  onClick={() => toggle(idx)}
-                  className="w-full px-6 py-5 text-left flex items-center justify-between gap-4 font-serif text-lg sm:text-xl text-foreground hover:text-emerald-800 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+              return (
+                <div
+                  key={item.id ?? idx}
+                  className="bg-card text-card-foreground rounded-2xl overflow-hidden shadow-xs border border-border transition-all"
                 >
-                  <span className="font-medium leading-snug">{item.question}</span>
-                  <IconChevronDown
-                    className={`size-5 shrink-0 text-muted-foreground transition-transform duration-200 ${
-                      isOpen ? 'rotate-180' : ''
-                    }`}
-                  />
-                </button>
+                  <button
+                    type="button"
+                    id={triggerId}
+                    onClick={() => toggle(idx)}
+                    aria-expanded={isOpen}
+                    aria-controls={panelId}
+                    className="w-full px-6 py-5 text-left flex items-center justify-between gap-4 font-serif text-lg sm:text-xl text-foreground hover:text-forest transition-colors cursor-pointer"
+                  >
+                    <span className="font-medium leading-snug">{item.question}</span>
+                    <IconChevronDown
+                      className={`size-5 shrink-0 text-muted-foreground transition-transform duration-200 ${
+                        isOpen ? 'rotate-180' : ''
+                      }`}
+                      aria-hidden
+                    />
+                  </button>
 
-                {isOpen && (
-                  <div className="px-6 pb-5 pt-0 text-sm text-muted-foreground leading-relaxed animate-in fade-in-50 duration-200">
+                  <div
+                    id={panelId}
+                    role="region"
+                    aria-labelledby={triggerId}
+                    hidden={!isOpen}
+                    className="px-6 pb-5 pt-0 text-sm text-muted-foreground leading-relaxed"
+                  >
                     {item.answer}
                   </div>
-                )}
-              </div>
-            )
-          })}
-        </div>
+                </div>
+              )
+            })}
+          </div>
       </div>
     </section>
   )
