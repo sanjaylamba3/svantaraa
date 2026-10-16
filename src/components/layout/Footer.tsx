@@ -1,10 +1,10 @@
-import React from 'react'
 import Link from 'next/link'
 import { IconMapPin, IconPhone } from '@tabler/icons-react'
 import Image from 'next/image'
 import { DEFAULT_PHONE } from '@/lib/site'
 
 interface FooterProps {
+  brandTagline?: string
   brandBio?: string
   address?: string
   phone?: string
@@ -14,6 +14,7 @@ interface FooterProps {
 }
 
 export function Footer({
+  brandTagline = 'Sanctuary of Conscious Care',
   brandBio = 'Where luxury meets heartfelt rescue care. Thoughtfully designed stays and authentic hospitality for every furry family member.',
   address = 'Alahawas, Sector 59, Gurugram, Haryana 122005',
   phone = DEFAULT_PHONE,
@@ -39,7 +40,7 @@ export function Footer({
                 />
               </Link>
               <span className="text-[10px] tracking-[0.22em] text-champagne uppercase font-semibold mt-1">
-                Sanctuary of Conscious Care
+                {brandTagline}
               </span>
             </div>
             <p className="text-sm text-mist max-w-md leading-relaxed">{brandBio}</p>
@@ -90,56 +91,21 @@ export function Footer({
               Explore
             </span>
             <nav className="flex flex-col gap-2 text-sm">
-              <a
-                href="#reserve-concierge"
-                className="text-mist hover:text-ivory transition-colors"
-              >
-                Luxury Chalets
-              </a>
-              <a
-                href="#reserve-concierge"
-                className="text-mist hover:text-ivory transition-colors"
-              >
-                Daycare Suites
-              </a>
-              <a
-                href="#reserve-concierge"
-                className="text-mist hover:text-ivory transition-colors"
-              >
-                Dog Park & Agility Grounds
-              </a>
-              <a
-                href="#social-impact"
-                className="text-mist hover:text-ivory transition-colors"
-              >
-                Rescue Mission
-              </a>
-              <a
-                href="#daily-rhythm"
-                className="text-mist hover:text-ivory transition-colors"
-              >
-                Circadian Rhythm
-              </a>
-              <a
-                href="#testimonials"
-                className="text-mist hover:text-ivory transition-colors"
-              >
-                Guest Reviews
-              </a>
-              <a
-                href="#faq-section"
-                className="text-mist hover:text-ivory transition-colors"
-              >
-                Resident FAQs
-              </a>
+              <Link href="/about">About Us</Link>
+              <Link href="/contact">Contact Us</Link>
             </nav>
           </div>
         </div>
 
-        <div className="pt-6 flex flex-col md:flex-row items-center justify-center gap-4 text-xs text-mist">
+        <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-mist">
           <span className="text-center md:text-left">
             © 2026 Svantaraa Pet Retreat. All sanctuary rights reserved.
           </span>
+          <div className="flex gap-4">
+            
+            <Link href="/privacy">Privacy Policy</Link>
+            <Link href="/terms">Terms of Service</Link>
+          </div>
         </div>
       </div>
     </footer>

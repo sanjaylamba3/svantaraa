@@ -25,13 +25,13 @@ export function Header({ phone = DEFAULT_PHONE }: HeaderProps) {
               {link.label}
             </Link>
           ))}
-          <a
+          {/* <a
             href={phoneHref}
             className="text-xs tracking-[0.08em] font-medium text-foreground/70 hover:text-foreground transition-colors"
             aria-label={`Call us at ${phone}`}
           >
             {phone}
-          </a>
+          </a> */}
         </nav>
 
         <div className="flex items-center justify-center select-none py-1">

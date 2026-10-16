@@ -1,13 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import {
-  IconSun,
-  IconBowl,
-  IconMoon,
-  IconBallTennis,
-  IconSend,
-  IconHeart,
-} from '@tabler/icons-react'
+import { IconSun, IconBowl, IconMoon, IconBallTennis, IconSend } from '@tabler/icons-react'
 import { getMediaAlt, getMediaUrl } from '@/lib/media'
 import type { Media } from '@/payload-types'
 
@@ -17,16 +10,36 @@ interface ScheduleItem {
   description: string
 }
 
+interface RhythmPhoto {
+  image?: Media | string | number | null
+  id?: string | null
+}
+
 interface DailyRhythmSectionProps {
   overline?: string
   heading?: string
   description?: string
   schedule?: ScheduleItem[] | null
-  photo1?: Media | string | number | null
-  photo1DefaultUrl?: string
-  photo2?: Media | string | number | null
-  photo2DefaultUrl?: string
+  photos?: RhythmPhoto[] | null
 }
+
+const defaultPhotoUrls = [
+  '/boarding-with-purpose-1.avif',
+  '/daycare.avif',
+  '/boarding-with-purpose-2.avif',
+  '/dog-park.avif',
+  '/boarding.avif',
+  '/founder.avif',
+]
+
+const photoSpans = [
+  'row-span-2',
+  'row-span-1',
+  'row-span-2',
+  'row-span-1',
+  'row-span-1',
+  'row-span-1',
+]
 
 const defaultSchedule: ScheduleItem[] = [
   {
@@ -66,16 +79,16 @@ export function DailyRhythmSection({
   heading = 'Daily Rhythm at the Sanctuary',
   description = 'Dogs thrive on predictable, calm structure. Our daily cadence balances energizing outdoor exploration with restorative sensory quietude.',
   schedule,
-  photo1,
-  photo1DefaultUrl = '/boarding-with-purpose-1.avif',
-  photo2,
-  photo2DefaultUrl = '/boarding-with-purpose-2.avif',
+  photos,
 }: DailyRhythmSectionProps) {
   const activeSchedule = schedule && schedule.length > 0 ? schedule : defaultSchedule
-  const img1Url = getMediaUrl(photo1, photo1DefaultUrl)
-  const img2Url = getMediaUrl(photo2, photo2DefaultUrl)
-  const img1Alt = getMediaAlt(photo1, heading)
-  const img2Alt = getMediaAlt(photo2, heading)
+  const gallery = defaultPhotoUrls.map((fallbackUrl, index) => {
+    const photo = photos?.[index]
+    return {
+      url: getMediaUrl(photo?.image, fallbackUrl),
+      alt: getMediaAlt(photo?.image, heading),
+    }
+  })
 
   const getTimelineIcon = (index: number) => {
     switch (index) {
@@ -95,7 +108,7 @@ export function DailyRhythmSection({
 
   return (
     <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-24" id="daily-rhythm">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:items-stretch items-start">
         <div className="lg:col-span-6 flex flex-col gap-8">
           <div className="flex flex-col gap-2">
             <span className="text-xs uppercase tracking-[0.2em] text-forest font-semibold">
@@ -133,52 +146,21 @@ export function DailyRhythmSection({
           </div>
         </div>
 
-        <div className="lg:col-span-6 grid grid-cols-2 gap-4 lg:sticky lg:top-28">
-          <div className="flex flex-col gap-4">
-            <div className="relative rounded-2xl overflow-hidden shadow-sm h-72 bg-muted">
+        <div className="lg:col-span-6 grid grid-cols-2 gap-4 auto-rows-[11rem] lg:h-full lg:auto-rows-fr lg:grid-rows-4">
+          {gallery.map((photo, index) => (
+            <div
+              key={`${photo.url}-${index}`}
+              className={`relative overflow-hidden rounded-2xl bg-muted shadow-sm ${photoSpans[index]}`}
+            >
               <Image
-                src={img1Url}
-                alt={img1Alt}
+                src={photo.url}
+                alt={photo.alt}
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 50vw, 25vw"
               />
             </div>
-            <div className="rounded-2xl overflow-hidden shadow-sm h-52 bg-muted p-5 flex flex-col justify-between border border-border">
-              <IconHeart className="size-8 text-forest" aria-hidden />
-              <div>
-                <span className="font-serif text-xl font-medium text-foreground">1:3 Staff Ratio</span>
-                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                  Unmatched attentiveness ensuring immediate reassurance whenever a guest feels
-                  hesitation.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-4 -mt-4 sm:-mt-6">
-            <div className="rounded-2xl overflow-hidden shadow-sm h-56 bg-espresso text-ivory p-5 flex flex-col justify-between border border-border-dark">
-              <span className="text-xs uppercase tracking-widest text-champagne font-semibold">
-                Live Streaming
-              </span>
-              <p className="text-sm text-mist leading-relaxed">
-                Tap into your companion’s chalet anytime directly from your iOS or Android device.
-              </p>
-              <div className="flex items-center gap-2 text-xs text-ivory">
-                <span className="w-2.5 h-2.5 rounded-full bg-brick animate-ping" aria-hidden />
-                <span>Encrypted High Definition</span>
-              </div>
-            </div>
-            <div className="relative rounded-2xl overflow-hidden shadow-sm h-80 bg-muted">
-              <Image
-                src={img2Url}
-                alt={img2Alt}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 50vw, 25vw"
-              />
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

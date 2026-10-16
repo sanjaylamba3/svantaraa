@@ -99,10 +99,7 @@ export default async function HomePage() {
         heading={homepageData?.rhythmHeading || undefined}
         description={homepageData?.rhythmDescription || undefined}
         schedule={homepageData?.rhythmSchedule || null}
-        photo1={homepageData?.rhythmPhoto1 || null}
-        photo1DefaultUrl={homepageData?.rhythmPhoto1DefaultUrl || undefined}
-        photo2={homepageData?.rhythmPhoto2 || null}
-        photo2DefaultUrl={homepageData?.rhythmPhoto2DefaultUrl || undefined}
+        photos={homepageData?.rhythmPhotos || null}
       />
 
       <PurposeSection
@@ -119,6 +116,7 @@ export default async function HomePage() {
         ctaLink={homepageData?.purposeCtaLink || undefined}
         footnote={homepageData?.purposeFootnote || undefined}
       />
+     
 
       <TestimonialsSection testimonials={testimonials} />
 

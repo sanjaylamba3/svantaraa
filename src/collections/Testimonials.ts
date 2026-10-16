@@ -48,6 +48,21 @@ export const Testimonials: CollectionConfig = {
       relationTo: 'media',
     },
     {
+      name: 'photo',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description: 'Photo of the pet, shown on the testimonial card.',
+      },
+    },
+    {
+      name: 'defaultPhotoUrl',
+      type: 'text',
+      admin: {
+        description: 'Pet photo URL used when no photo is uploaded.',
+      },
+    },
+    {
       name: 'order',
       type: 'number',
       defaultValue: 0,

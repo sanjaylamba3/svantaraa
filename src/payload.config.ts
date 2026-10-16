@@ -13,6 +13,7 @@ import { Services } from './collections/Services'
 import { Testimonials } from './collections/Testimonials'
 import { Faqs } from './collections/Faqs'
 import { Homepage } from './globals/Homepage'
+import { SiteFooter } from './globals/SiteFooter'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -25,7 +26,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, Services, Testimonials, Faqs],
-  globals: [Homepage],
+  globals: [Homepage, SiteFooter],
   editor: lexicalEditor(),
   secret: env.PAYLOAD_SECRET,
   typescript: {

@@ -2,6 +2,9 @@ import React from 'react'
 import './styles.css'
 import { Playfair_Display, Outfit } from 'next/font/google'
 import { cn } from 'cn'
+import { getPayload } from 'payload'
+import config from '@/payload.config'
+import type { SiteFooter as SiteFooterGlobal } from '@/payload-types'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 
@@ -26,6 +29,19 @@ const fontBody = Outfit({
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props
 
+  let footerData: SiteFooterGlobal | null = null
+
+  try {
+    const payloadConfig = await config
+    const payload = await getPayload({ config: payloadConfig })
+    footerData = await payload.findGlobal({
+      slug: 'site-footer',
+      depth: 0,
+    })
+  } catch (error) {
+    console.warn('Could not fetch site footer global, using defaults:', error)
+  }
+
   return (
     <html lang="en">
       <body
@@ -37,7 +53,15 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       >
         <Header />
         <main className="flex-1 w-full pt-20">{children}</main>
-        <Footer />
+        <Footer
+          brandTagline={footerData?.brandTagline || undefined}
+          brandBio={footerData?.brandBio || undefined}
+          address={footerData?.address || undefined}
+          phone={footerData?.phone || undefined}
+          hoursBoarding={footerData?.hoursBoarding || undefined}
+          hoursDaycare={footerData?.hoursDaycare || undefined}
+          hoursDogPark={footerData?.hoursDogPark || undefined}
+        />
       </body>
     </html>
   )

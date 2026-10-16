@@ -95,9 +95,11 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     homepage: Homepage;
+    'site-footer': SiteFooter;
   };
   globalsSelect: {
     homepage: HomepageSelect<false> | HomepageSelect<true>;
+    'site-footer': SiteFooterSelect<false> | SiteFooterSelect<true>;
   };
   locale: null;
   widgets: {
@@ -263,6 +265,14 @@ export interface Testimonial {
   rating?: number | null;
   quote: string;
   avatar?: (number | null) | Media;
+  /**
+   * Photo of the pet, shown on the testimonial card.
+   */
+  photo?: (number | null) | Media;
+  /**
+   * Pet photo URL used when no photo is uploaded.
+   */
+  defaultPhotoUrl?: string | null;
   /**
    * Display order on homepage
    */
@@ -484,6 +494,8 @@ export interface TestimonialsSelect<T extends boolean = true> {
   rating?: T;
   quote?: T;
   avatar?: T;
+  photo?: T;
+  defaultPhotoUrl?: T;
   order?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -582,10 +594,15 @@ export interface Homepage {
         id?: string | null;
       }[]
     | null;
-  rhythmPhoto1?: (number | null) | Media;
-  rhythmPhoto1DefaultUrl?: string | null;
-  rhythmPhoto2?: (number | null) | Media;
-  rhythmPhoto2DefaultUrl?: string | null;
+  /**
+   * Up to six photos fill the grid beside the schedule. Empty slots keep the built-in sanctuary photos.
+   */
+  rhythmPhotos?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
   purposeBadge?: string | null;
   purposeHeading?: string | null;
   purposeNarrative?: string | null;
@@ -613,6 +630,15 @@ export interface Homepage {
   bookingSecondaryCtaText?: string | null;
   bookingSecondaryCtaLink?: string | null;
   conciergeContact?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-footer".
+ */
+export interface SiteFooter {
+  id: number;
   brandTagline?: string | null;
   brandBio?: string | null;
   address?: string | null;
@@ -664,10 +690,12 @@ export interface HomepageSelect<T extends boolean = true> {
         description?: T;
         id?: T;
       };
-  rhythmPhoto1?: T;
-  rhythmPhoto1DefaultUrl?: T;
-  rhythmPhoto2?: T;
-  rhythmPhoto2DefaultUrl?: T;
+  rhythmPhotos?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
   purposeBadge?: T;
   purposeHeading?: T;
   purposeNarrative?: T;
@@ -695,6 +723,15 @@ export interface HomepageSelect<T extends boolean = true> {
   bookingSecondaryCtaText?: T;
   bookingSecondaryCtaLink?: T;
   conciergeContact?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-footer_select".
+ */
+export interface SiteFooterSelect<T extends boolean = true> {
   brandTagline?: T;
   brandBio?: T;
   address?: T;

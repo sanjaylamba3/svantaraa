@@ -1,11 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import {
-  IconArrowRight,
-  IconPaw,
-  IconBandage,
-  IconHeartHandshake,
-} from '@tabler/icons-react'
+import { IconHeartHandshake } from '@tabler/icons-react'
 import { Button } from '@/components/ui/button'
 import { getMediaAlt, getMediaUrl } from '@/lib/media'
 import type { Media } from '@/payload-types'
@@ -14,6 +9,7 @@ interface MetricItem {
   value: string
   label?: string | null
   description: string
+  id?: string | null
 }
 
 interface PurposeSectionProps {
@@ -49,6 +45,16 @@ const defaultMetrics: MetricItem[] = [
   },
 ]
 
+const portraitPhoto = {
+  src: '/boarding-with-purpose-1.avif',
+  alt: 'A rescued dog resting on the sanctuary lawn',
+}
+
+const restingPhoto = {
+  src: '/boarding-with-purpose-2.avif',
+  alt: 'Two rescued dogs resting together in the sanctuary garden',
+}
+
 export function PurposeSection({
   badge = 'Social Enterprise',
   heading = 'Boarding With Purpose: Every Night Shelters a Soul.',
@@ -64,94 +70,98 @@ export function PurposeSection({
   footnote = 'Visitor access to shelter sanctuary by prior request.',
 }: PurposeSectionProps) {
   const activeMetrics = metrics && metrics.length > 0 ? metrics : defaultMetrics
-  const founderImgUrl = getMediaUrl(founderPhoto, founderDefaultPhotoUrl)
-  const founderAlt = getMediaAlt(founderPhoto, `${founderName} - ${founderRole}`)
-
-  const getMetricIcon = (index: number) => {
-    switch (index) {
-      case 0:
-        return <IconPaw className="size-7 text-champagne" aria-hidden />
-      case 1:
-        return <IconBandage className="size-7 text-champagne" aria-hidden />
-      case 2:
-      default:
-        return <IconHeartHandshake className="size-7 text-champagne" aria-hidden />
-    }
-  }
+  const caregiverPhotoUrl = getMediaUrl(founderPhoto, founderDefaultPhotoUrl)
+  const caregiverAlt = getMediaAlt(founderPhoto, `${founderName}, ${founderRole}`)
 
   return (
     <section
-      className="w-full bg-espresso text-ivory py-20 md:py-28 relative overflow-hidden"
       id="social-impact"
+      className="relative w-full overflow-hidden bg-forest py-20 text-ivory md:py-24"
     >
-      <div className="absolute -right-20 -bottom-20 w-96 h-96 bg-forest/30 rounded-full blur-3xl pointer-events-none" />
+      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
+        <div className="flex flex-col gap-6 lg:col-span-6">
+          <div className="inline-flex items-center gap-3">
+            <span className="h-px w-8 bg-champagne" aria-hidden />
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-champagne">
+              {badge}
+            </span>
+          </div>
 
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-5 relative">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-cocoa border border-border-dark">
-              <Image
-                src={founderImgUrl}
-                alt={founderAlt}
-                width={800}
-                height={920}
-                className="w-full h-[460px] object-cover"
-                sizes="(max-width: 1024px) 100vw, 40vw"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-espresso via-espresso/20 to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6">
-                <span className="text-[11px] uppercase tracking-[0.2em] text-champagne font-semibold">
-                  {founderTitle}
+          <h2 className="font-serif text-3xl font-semibold leading-tight text-ivory sm:text-4xl lg:text-5xl">
+            {heading}
+          </h2>
+
+          <p className="text-base leading-relaxed text-sand/90 sm:text-lg">{narrative}</p>
+
+          <div className="grid grid-cols-3 gap-3 pt-2 sm:gap-4">
+            {activeMetrics.map((metric) => (
+              <div
+                key={metric.id ?? `${metric.value}-${metric.label ?? metric.description}`}
+                className="flex flex-col rounded-2xl bg-espresso/40 p-3 backdrop-blur-sm sm:p-4"
+              >
+                <span className="font-serif text-2xl font-semibold tracking-tight text-champagne sm:text-3xl">
+                  {metric.value}
                 </span>
-                <h3 className="font-serif text-2xl text-ivory mt-0.5">{founderName}</h3>
-                <p className="text-xs text-mist mt-0.5 font-light">{founderRole}</p>
+                <span className="mt-1 text-xs leading-snug text-sand sm:text-sm">
+                  {metric.label || metric.description}
+                </span>
               </div>
+            ))}
+          </div>
+
+          <div className="flex flex-col gap-4 pt-2 sm:flex-row sm:items-center">
+            <a href={ctaLink}>
+              <Button
+                size="lg"
+                className="h-auto rounded-full bg-champagne-soft px-8 py-3.5 text-xs font-semibold uppercase tracking-wider text-espresso shadow-md hover:bg-sand"
+              >
+                {ctaText}
+              </Button>
+            </a>
+            <p className="inline-flex items-center gap-2 text-sm text-sand">
+              <IconHeartHandshake className="size-5 text-champagne" aria-hidden />
+              <span>{footnote}</span>
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 lg:col-span-6">
+          <div className="flex flex-col gap-4">
+            <div className="relative aspect-[3/4] overflow-hidden rounded-2xl shadow-lg">
+              <Image
+                src={portraitPhoto.src}
+                alt={portraitPhoto.alt}
+                fill
+                sizes="(max-width: 1024px) 50vw, 25vw"
+                className="object-cover"
+              />
+            </div>
+            <div className="rounded-2xl bg-espresso/55 p-5 backdrop-blur-md">
+              <p className="font-serif text-lg font-semibold text-champagne">{founderTitle}</p>
+              <p className="mt-1 text-sm leading-relaxed text-sand/90">
+                {founderName}. {founderRole}
+              </p>
             </div>
           </div>
 
-          <div className="lg:col-span-7 flex flex-col gap-8">
-            <div className="flex flex-col gap-2">
-              <span className="text-xs uppercase tracking-[0.2em] text-champagne font-semibold">
-                {badge}
-              </span>
-              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl leading-tight text-ivory">
-                {heading}
-              </h2>
-              <p className="text-base sm:text-lg text-mist leading-relaxed font-light mt-2">
-                {narrative}
-              </p>
+          <div className="mt-8 flex flex-col gap-4">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-lg">
+              <Image
+                src={caregiverPhotoUrl}
+                alt={caregiverAlt}
+                fill
+                sizes="(max-width: 1024px) 50vw, 25vw"
+                className="object-cover"
+              />
             </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-              {activeMetrics.map((m, idx) => (
-                <div
-                  key={idx}
-                  className="bg-ivory/5 backdrop-blur-md border border-border-dark rounded-2xl p-5 flex flex-col justify-between"
-                >
-                  {getMetricIcon(idx)}
-                  <div className="mt-4">
-                    <span className="font-serif text-2xl sm:text-3xl font-bold text-ivory tracking-tight">
-                      {m.value}
-                    </span>
-                    <span className="block text-xs text-mist mt-1 leading-relaxed">
-                      {m.description}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="pt-2 flex flex-col sm:flex-row sm:items-center gap-4">
-              <a href={ctaLink}>
-                <Button
-                  size="lg"
-                  className="rounded-full px-6 py-3 text-xs uppercase tracking-wider font-semibold shadow-md flex items-center gap-2 bg-ivory text-espresso hover:bg-ivory/90"
-                >
-                  <span>{ctaText}</span>
-                  <IconArrowRight className="size-4" />
-                </Button>
-              </a>
-              <span className="text-xs text-mist">{footnote}</span>
+            <div className="relative aspect-square overflow-hidden rounded-2xl shadow-lg">
+              <Image
+                src={restingPhoto.src}
+                alt={restingPhoto.alt}
+                fill
+                sizes="(max-width: 1024px) 50vw, 25vw"
+                className="object-cover"
+              />
             </div>
           </div>
         </div>

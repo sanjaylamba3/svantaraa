@@ -1,11 +1,6 @@
-import React from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import {
-  IconArrowUpRight,
-  IconDiscountCheck,
-  IconCheck,
-} from '@tabler/icons-react'
+import { IconArrowUpRight, IconDiscountCheck, IconCheck } from '@tabler/icons-react'
 import { getMediaAlt, getMediaUrl } from '@/lib/media'
 import { isExternalBookingUrl } from '@/lib/site'
 import type { Service } from '@/payload-types'
@@ -38,7 +33,7 @@ type FallbackService = {
 const defaultFallbackServices: FallbackService[] = [
   {
     id: 'default-1',
-    title: 'Luxury Boarding Chalets',
+    title: 'Luxury Accomodation',
     badge: 'Signature Chalet',
     featureTag: '100% Private Patio',
     description:
@@ -53,10 +48,11 @@ const defaultFallbackServices: FallbackService[] = [
       { text: 'Orthopedic medical-grade memory foam rest' },
     ],
     ctaText: 'Book Now',
+    ctaLink: 'https://svantaraa-ochre.vercel.app/',
   },
   {
     id: 'default-2',
-    title: 'Enrichment Daycare',
+    title: 'Playful Daycare',
     badge: 'Social & Sensory',
     featureTag: 'Matched Temperaments',
     description:
@@ -71,6 +67,7 @@ const defaultFallbackServices: FallbackService[] = [
       { text: 'Cooling splash pad activities in warm afternoons' },
     ],
     ctaText: 'Book Now',
+    ctaLink: 'https://svantaraa-ochre.vercel.app/',
   },
   {
     id: 'default-3',
@@ -89,6 +86,7 @@ const defaultFallbackServices: FallbackService[] = [
       { text: 'Shaded lounge with cold-pressed beverages' },
     ],
     ctaText: 'Book Now',
+    ctaLink: 'https://svantaraa-ochre.vercel.app/',
   },
 ]
 
@@ -127,95 +125,95 @@ export function ExperienceSection({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {items.map((item) => {
-              const imageUrl = getMediaUrl(item.image, item.defaultImageUrl ?? '')
-              const imageAlt = getMediaAlt(item.image, item.title)
-              const formattedPrice = item.price ? `₹${item.price.toLocaleString('en-IN')}` : ''
-              const bookingUrl = item.ctaLink
-              const showBooking = isExternalBookingUrl(bookingUrl)
-              const itemKey = typeof item.id === 'number' ? item.id : item.id
+          {items.map((item) => {
+            const imageUrl = getMediaUrl(item.image, item.defaultImageUrl ?? '')
+            const imageAlt = getMediaAlt(item.image, item.title)
+            const formattedPrice = item.price ? `₹${item.price.toLocaleString('en-IN')}` : ''
+            const bookingUrl = item.ctaLink
+            const showBooking = isExternalBookingUrl(bookingUrl)
+            const itemKey = typeof item.id === 'number' ? item.id : item.id
 
-              return (
-                <div
-                  key={itemKey}
-                  className="group bg-card text-card-foreground rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 border border-border flex flex-col"
-                >
-                  <div className="relative h-64 overflow-hidden bg-muted">
-                    <Image
-                      src={imageUrl}
-                      alt={imageAlt}
-                      width={640}
-                      height={256}
-                      className="w-full h-full object-cover"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
+            return (
+              <div
+                key={itemKey}
+                className="group bg-card text-card-foreground rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 border border-border flex flex-col"
+              >
+                <div className="relative h-64 overflow-hidden bg-muted">
+                  <Image
+                    src={imageUrl}
+                    alt={imageAlt}
+                    width={640}
+                    height={256}
+                    className="w-full h-full object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
 
-                    {item.badge && (
-                      <div className="absolute top-4 left-4">
-                        <span className="px-3 py-1 rounded-full bg-background/90 backdrop-blur-md text-[11px] text-forest tracking-widest uppercase font-semibold shadow-xs">
-                          {item.badge}
-                        </span>
-                      </div>
-                    )}
+                  {item.badge && (
+                    <div className="absolute top-4 left-4">
+                      <span className="px-3 py-1 rounded-full bg-background/90 backdrop-blur-md text-[11px] text-forest tracking-widest uppercase font-semibold shadow-xs">
+                        {item.badge}
+                      </span>
+                    </div>
+                  )}
 
-                    {item.featureTag && (
-                      <div className="absolute bottom-4 right-4 bg-espresso/85 backdrop-blur-sm text-ivory px-3 py-1.5 rounded-lg flex items-center gap-1.5 text-xs">
-                        <IconDiscountCheck className="size-4 text-champagne shrink-0" aria-hidden />
-                        <span>{item.featureTag}</span>
-                      </div>
+                  {item.featureTag && (
+                    <div className="absolute bottom-4 right-4 bg-espresso/85 backdrop-blur-sm text-ivory px-3 py-1.5 rounded-lg flex items-center gap-1.5 text-xs">
+                      <IconDiscountCheck className="size-4 text-champagne shrink-0" aria-hidden />
+                      <span>{item.featureTag}</span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="p-6 flex-1 flex flex-col justify-between gap-6">
+                  <div className="flex flex-col gap-3">
+                    <h3 className="font-serif text-2xl text-foreground group-hover:text-forest transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {item.description}
+                    </p>
+
+                    {item.features && item.features.length > 0 && (
+                      <ul className="pt-2 flex flex-col gap-2 text-xs text-muted-foreground">
+                        {item.features.map((feature, fIdx) => (
+                          <li key={fIdx} className="flex items-center gap-2">
+                            <IconCheck className="size-4 text-forest shrink-0" aria-hidden />
+                            <span>{feature.text}</span>
+                          </li>
+                        ))}
+                      </ul>
                     )}
                   </div>
 
-                  <div className="p-6 flex-1 flex flex-col justify-between gap-6">
-                    <div className="flex flex-col gap-3">
-                      <h3 className="font-serif text-2xl text-foreground group-hover:text-forest transition-colors">
-                        {item.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {item.description}
-                      </p>
-
-                      {item.features && item.features.length > 0 && (
-                        <ul className="pt-2 flex flex-col gap-2 text-xs text-muted-foreground">
-                          {item.features.map((feature, fIdx) => (
-                            <li key={fIdx} className="flex items-center gap-2">
-                              <IconCheck className="size-4 text-forest shrink-0" aria-hidden />
-                              <span>{feature.text}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
+                  <div className="pt-4 border-t border-border flex items-center justify-between gap-4">
+                    <div className="flex flex-col">
+                      <span className="text-[10px] uppercase text-muted-foreground tracking-wider font-medium">
+                        {item.priceLabel || 'Per Night Stay'}
+                      </span>
+                      <span className="text-xl font-bold tracking-tight text-foreground">
+                        {formattedPrice}{' '}
+                        <span className="text-xs text-muted-foreground font-normal">
+                          {item.priceUnit}
+                        </span>
+                      </span>
                     </div>
 
-                    <div className="pt-4 border-t border-border flex items-center justify-between gap-4">
-                      <div className="flex flex-col">
-                        <span className="text-[10px] uppercase text-muted-foreground tracking-wider font-medium">
-                          {item.priceLabel || 'Per Night Stay'}
-                        </span>
-                        <span className="text-xl font-bold tracking-tight text-foreground">
-                          {formattedPrice}{' '}
-                          <span className="text-xs text-muted-foreground font-normal">
-                            {item.priceUnit}
-                          </span>
-                        </span>
-                      </div>
-
-                      {showBooking && bookingUrl ? (
-                        <a href={bookingUrl} target="_blank" rel="noopener noreferrer">
-                          <Button
-                            size="sm"
-                            className="rounded-full px-5 py-2 text-xs tracking-wider uppercase font-semibold shadow-xs"
-                          >
-                            {item.ctaText || 'Select Suite'}
-                          </Button>
-                        </a>
-                      ) : null}
-                    </div>
+                    {showBooking && bookingUrl ? (
+                      <a href={bookingUrl} target="_blank" rel="noopener noreferrer">
+                        <Button
+                          size="sm"
+                          className="rounded-full px-5 py-2 text-xs tracking-wider uppercase font-semibold shadow-xs"
+                        >
+                          {item.ctaText || 'Book Now'}
+                        </Button>
+                      </a>
+                    ) : null}
                   </div>
                 </div>
-              )
-            })}
-          </div>
+              </div>
+            )
+          })}
+        </div>
       </div>
     </section>
   )

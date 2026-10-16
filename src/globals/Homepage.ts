@@ -149,22 +149,25 @@ export const Homepage: GlobalConfig = {
               ],
             },
             {
-              name: 'rhythmPhoto1',
-              type: 'upload',
-              relationTo: 'media',
-            },
-            {
-              name: 'rhythmPhoto1DefaultUrl',
-              type: 'text',
-            },
-            {
-              name: 'rhythmPhoto2',
-              type: 'upload',
-              relationTo: 'media',
-            },
-            {
-              name: 'rhythmPhoto2DefaultUrl',
-              type: 'text',
+              name: 'rhythmPhotos',
+              type: 'array',
+              maxRows: 6,
+              labels: {
+                singular: 'Photo',
+                plural: 'Photos',
+              },
+              admin: {
+                description:
+                  'Up to six photos fill the grid beside the schedule. Empty slots keep the built-in sanctuary photos.',
+              },
+              fields: [
+                {
+                  name: 'image',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                },
+              ],
             },
           ],
         },
@@ -260,39 +263,6 @@ export const Homepage: GlobalConfig = {
             },
             {
               name: 'conciergeContact',
-              type: 'text',
-            },
-          ],
-        },
-        {
-          label: 'Footer & Contact',
-          fields: [
-            {
-              name: 'brandTagline',
-              type: 'text',
-            },
-            {
-              name: 'brandBio',
-              type: 'textarea',
-            },
-            {
-              name: 'address',
-              type: 'text',
-            },
-            {
-              name: 'phone',
-              type: 'text',
-            },
-            {
-              name: 'hoursBoarding',
-              type: 'text',
-            },
-            {
-              name: 'hoursDaycare',
-              type: 'text',
-            },
-            {
-              name: 'hoursDogPark',
               type: 'text',
             },
           ],
