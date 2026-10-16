@@ -1,4 +1,3 @@
-import React from 'react'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import type { Homepage, Service, Testimonial, Faq } from '@/payload-types'

@@ -48,12 +48,12 @@ export function HeroSection({
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-44 pb-24 md:pt-48 md:pb-32 flex flex-col justify-end">
         <div className="max-w-3xl flex flex-col gap-4">
           {/* Badge Pill */}
-          <div className="inline-flex items-center gap-2 self-start px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-amber-300">
+          {/* <div className="inline-flex items-center gap-2 self-start px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-amber-300">
             <IconPlant className="size-4 shrink-0 text-amber-300" />
             <span className="text-[11px] uppercase tracking-[0.2em] font-semibold text-amber-200">
               {badge}
             </span>
-          </div>
+          </div> */}
 
           {/* Headline */}
           <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.15] text-white">

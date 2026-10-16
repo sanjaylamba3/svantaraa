@@ -56,7 +56,7 @@ export function PurposeSection({
   founderName = 'Vaishali Sharma',
   founderRole = 'Canine Ethologist & Animal Rescue Advocate',
   founderPhoto,
-  founderDefaultPhotoUrl = 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80',
+  founderDefaultPhotoUrl = '/founder.avif',
   metrics,
   ctaText = 'Read Rescue Journal',
   ctaLink = '#philosophy',

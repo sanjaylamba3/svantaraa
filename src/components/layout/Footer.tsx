@@ -34,7 +34,7 @@ export function Footer({
               width={778}
               height={104}
               priority
-              className="h-7 bg-white sm:h-8 md:h-9 lg:h-10 w-auto object-contain transition-opacity group-hover:opacity-90 dark:brightness-0 dark:invert"
+              className="h-7  sm:h-8 md:h-9 lg:h-10 w-auto object-contain transition-opacity group-hover:opacity-90 dark:brightness-0 invert "
             />
           </Link>
               <span className="text-[10px] tracking-[0.22em] text-amber-300 uppercase font-semibold mt-1">

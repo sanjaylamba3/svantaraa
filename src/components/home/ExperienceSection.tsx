@@ -28,14 +28,13 @@ const defaultFallbackServices = [
     price: 2250,
     priceUnit: '/ night',
     priceLabel: 'Per Night Stay',
-    defaultImageUrl:
-      'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&w=800&q=80',
+    defaultImageUrl: '/boarding.avif',
     features: [
       { text: '24/7 dedicated live stream link for parents' },
       { text: 'Gourmet organic meals cooked to dietary spec' },
       { text: 'Orthopedic medical-grade memory foam rest' },
     ],
-    ctaText: 'Select Suite',
+    ctaText: 'Book Now',
     ctaLink: '#reserve-concierge',
   },
   {
@@ -48,14 +47,13 @@ const defaultFallbackServices = [
     price: 1000,
     priceUnit: '/ 5 hrs',
     priceLabel: 'Daycare Session',
-    defaultImageUrl:
-      'https://images.unsplash.com/photo-1534361960057-19889db9621e?auto=format&fit=crop&w=800&q=80',
+    defaultImageUrl: '/daycare.avif',
     features: [
       { text: 'Cognitive puzzle games & sensory scent trails' },
       { text: 'Calming frequency audio during 1:00 PM rest' },
       { text: 'Cooling splash pad activities in warm afternoons' },
     ],
-    ctaText: 'Book Daycare',
+    ctaText: 'Book Now',
     ctaLink: '#reserve-concierge',
   },
   {
@@ -68,14 +66,13 @@ const defaultFallbackServices = [
     price: 1000,
     priceUnit: '/ 2 hrs',
     priceLabel: 'Park Pass',
-    defaultImageUrl:
-      'https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=800&q=80',
+    defaultImageUrl: '/dog-park.avif',
     features: [
       { text: 'Fully secured double-gated perimeter walls' },
       { text: '100% pesticide-free grass safe for snouts' },
       { text: 'Shaded lounge with cold-pressed beverages' },
     ],
-    ctaText: 'Reserve Pass',
+    ctaText: 'Book Now',
     ctaLink: '#reserve-concierge',
   },
 ]
