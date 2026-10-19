@@ -139,15 +139,21 @@ export function PhilosophySection({
               startIndex,
             }}
             aria-label="Philosophy pillars"
-            className="w-full"
+            className="w-full [&_[data-slot=carousel-content]]:px-5 [&_[data-slot=carousel-content]]:py-8 sm:[&_[data-slot=carousel-content]]:px-0 sm:[&_[data-slot=carousel-content]]:py-6"
           >
-            <CarouselContent className="ml-0 py-2">
+            <CarouselContent className="ml-0 items-center">
               {slides.map((pillar, index) => (
-                <CarouselItem key={`${pillar.title}-${index}`} className="basis-1/3 pl-0">
+                <CarouselItem
+                  key={`${pillar.title}-${index}`}
+                  className="basis-[52%] pl-0 sm:basis-1/3"
+                >
                   <div
                     className={cn(
-                      'scale-90 flex items-center justify-center gap-3 px-2 py-1 text-left transition-transform duration-500 ease-out motion-reduce:transition-none sm:px-4',
-                      index === selected && 'scale-150',
+                      'mx-auto flex max-w-[12rem] origin-center scale-[0.92] flex-col items-center gap-1.5 px-1 py-1 text-center transition duration-500 ease-out motion-reduce:transition-none sm:max-w-none sm:flex-row sm:gap-3 sm:px-4 sm:text-left sm:scale-90',
+                      index === selected
+                        ? 'z-10 scale-110 opacity-100 sm:scale-125 md:scale-150'
+                        : 'opacity-50 sm:opacity-55',
+                      index !== selected && 'max-sm:scale-[0.82]',
                     )}
                   >
                     {renderIcon(pillar.icon)}
@@ -161,8 +167,8 @@ export function PhilosophySection({
             </CarouselContent>
           </Carousel>
 
-          <div className="pointer-events-none absolute top-1/2 left-1/3 h-10 w-px -translate-x-1/2 -translate-y-1/2 bg-border/60" />
-          <div className="pointer-events-none absolute top-1/2 left-2/3 h-10 w-px -translate-x-1/2 -translate-y-1/2 bg-border/60" />
+          {/* <div className="pointer-events-none absolute top-1/2 left-1/3 h-10 w-px -translate-x-1/2 -translate-y-1/2 bg-border/60" />
+          <div className="pointer-events-none absolute top-1/2 left-2/3 h-10 w-px -translate-x-1/2 -translate-y-1/2 bg-border/60" /> */}
         </div>
       </div>
     </section>
