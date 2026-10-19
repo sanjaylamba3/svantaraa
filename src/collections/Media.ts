@@ -10,7 +10,8 @@ export const Media: CollectionConfig = {
   admin: {
     useAsTitle: 'alt',
     group: 'Website & Content',
-    description: 'Image and asset gallery used across properties, experiences, and pages.',
+    description:
+      'Images and videos used across properties, experiences, and pages (including hero background clips).',
     defaultColumns: ['filename', 'alt', 'mimeType', 'filesize', 'updatedAt'],
   },
   access: {

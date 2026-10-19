@@ -42,7 +42,7 @@ export function Header({ phone = DEFAULT_PHONE }: HeaderProps) {
               width={778}
               height={104}
               priority
-              className="h-7 sm:h-8 md:h-9 lg:h-10 w-auto object-contain transition-opacity group-hover:opacity-90 dark:brightness-0 dark:invert"
+              className="w-60 h-auto transition-opacity group-hover:opacity-90 dark:brightness-0 dark:invert"
             />
           </Link>
         </div>
@@ -52,7 +52,7 @@ export function Header({ phone = DEFAULT_PHONE }: HeaderProps) {
             <Button
               className="rounded-full px-6 py-2.5 text-xs tracking-[0.14em] uppercase font-semibold shadow-sm"
             >
-              Reserve
+              Book Now
             </Button>
           </a>
 

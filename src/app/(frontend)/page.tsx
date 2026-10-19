@@ -1,6 +1,7 @@
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import type { Homepage, Service, Testimonial, Faq } from '@/payload-types'
+import { getMediaAlt, getMediaUrl } from '@/lib/media'
 
 import { HeroSection } from '@/components/home/HeroSection'
 import { PhilosophySection } from '@/components/home/PhilosophySection'
@@ -8,10 +9,25 @@ import { ExperienceSection } from '@/components/home/ExperienceSection'
 import { DailyRhythmSection } from '@/components/home/DailyRhythmSection'
 import { PurposeSection } from '@/components/home/PurposeSection'
 import { TestimonialsSection } from '@/components/home/TestimonialsSection'
+import { InstagramSection } from '@/components/home/InstagramSection'
 import { FaqSection } from '@/components/home/FaqSection'
 import { BookingBanner } from '@/components/home/BookingBanner'
 
 export const revalidate = 60
+
+function instagramSnapshots(
+  rows: Homepage['instagramPhotos'],
+): { src: string; alt: string }[] | undefined {
+  if (!rows?.length) return undefined
+
+  const photos = rows.flatMap((row) => {
+    const src = getMediaUrl(row.image)
+    if (!src) return []
+    return [{ src, alt: getMediaAlt(row.image, 'A photo from the sanctuary') }]
+  })
+
+  return photos.length > 0 ? photos : undefined
+}
 
 export default async function HomePage() {
   const payloadConfig = await config
@@ -65,15 +81,15 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full bg-background">
       <HeroSection
-        badge={homepageData?.heroBadge || undefined}
         headline={homepageData?.heroHeadline || undefined}
         description={homepageData?.heroDescription || undefined}
         primaryCtaText={homepageData?.heroPrimaryCtaText || undefined}
         primaryCtaLink={homepageData?.heroPrimaryCtaLink || undefined}
         secondaryCtaText={homepageData?.heroSecondaryCtaText || undefined}
         secondaryCtaLink={homepageData?.heroSecondaryCtaLink || undefined}
+        video={homepageData?.heroVideo || null}
         image={homepageData?.heroImage || null}
         defaultImageUrl={homepageData?.heroDefaultImageUrl || undefined}
       />
@@ -94,35 +110,40 @@ export default async function HomePage() {
         services={services}
       />
 
-      <DailyRhythmSection
+      {/* <DailyRhythmSection
         overline={homepageData?.rhythmOverline || undefined}
         heading={homepageData?.rhythmHeading || undefined}
         description={homepageData?.rhythmDescription || undefined}
         schedule={homepageData?.rhythmSchedule || null}
         photos={homepageData?.rhythmPhotos || null}
-      />
+      /> */}
 
       <PurposeSection
         badge={homepageData?.purposeBadge || undefined}
         heading={homepageData?.purposeHeading || undefined}
         narrative={homepageData?.purposeNarrative || undefined}
-        founderTitle={homepageData?.founderTitle || undefined}
-        founderName={homepageData?.founderName || undefined}
-        founderRole={homepageData?.founderRole || undefined}
         founderPhoto={homepageData?.founderPhoto || null}
         founderDefaultPhotoUrl={homepageData?.founderDefaultPhotoUrl || undefined}
-        metrics={homepageData?.purposeMetrics || null}
+        metricValue={homepageData?.purposeMetricValue || undefined}
+        metricDescription={homepageData?.purposeMetricDescription || undefined}
         ctaText={homepageData?.purposeCtaText || undefined}
         ctaLink={homepageData?.purposeCtaLink || undefined}
-        footnote={homepageData?.purposeFootnote || undefined}
       />
      
 
       <TestimonialsSection testimonials={testimonials} />
 
+      <InstagramSection
+        overline={homepageData?.instagramOverline || undefined}
+        heading={homepageData?.instagramHeading || undefined}
+        ctaLabel={homepageData?.instagramCtaLabel || undefined}
+        href={homepageData?.instagramUrl || undefined}
+        photos={instagramSnapshots(homepageData?.instagramPhotos)}
+      />
+
       <FaqSection faqs={faqs} />
 
-      <BookingBanner
+      {/* <BookingBanner
         badge={homepageData?.bookingBadge || undefined}
         heading={homepageData?.bookingHeading || undefined}
         description={homepageData?.bookingDescription || undefined}
@@ -131,7 +152,7 @@ export default async function HomePage() {
         secondaryCtaText={homepageData?.bookingSecondaryCtaText || undefined}
         secondaryCtaLink={homepageData?.bookingSecondaryCtaLink || undefined}
         conciergeContact={homepageData?.conciergeContact || undefined}
-      />
+      /> */}
     </div>
   )
 }

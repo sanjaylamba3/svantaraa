@@ -1,9 +1,9 @@
-import React from 'react'
-import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { IconArrowRight } from '@tabler/icons-react'
-import { getMediaAlt, getMediaUrl } from '@/lib/media'
+import { getMediaUrl } from '@/lib/media'
 import type { Media } from '@/payload-types'
+
+const DEFAULT_HERO_VIDEO_URL = '/hero-dogs.mp4'
 
 interface HeroSectionProps {
   badge?: string
@@ -13,6 +13,7 @@ interface HeroSectionProps {
   primaryCtaLink?: string
   secondaryCtaText?: string
   secondaryCtaLink?: string
+  video?: Media | string | number | null
   image?: Media | string | number | null
   defaultImageUrl?: string
 }
@@ -24,22 +25,26 @@ export function HeroSection({
   primaryCtaLink = '#reserve-concierge',
   secondaryCtaText = 'Explore Sanctuary Life',
   secondaryCtaLink = '#daily-rhythm',
+  video,
   image,
-  defaultImageUrl = 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1920&q=80',
+  defaultImageUrl = '/hero-poster.jpg',
 }: HeroSectionProps) {
-  const imageUrl = getMediaUrl(image, defaultImageUrl)
-  const imageAlt = getMediaAlt(image, headline)
+  const videoUrl = getMediaUrl(video, DEFAULT_HERO_VIDEO_URL)
+  const posterUrl = getMediaUrl(image, defaultImageUrl)
 
   return (
-    <section className="relative w-full -mt-20 overflow-hidden bg-espresso text-ivory min-h-[680px] flex items-end">
+    <section className="relative w-full h-screen -mt-20 overflow-hidden bg-espresso text-ivory min-h-[680px] flex items-end">
       <div className="absolute inset-0">
-        <Image
-          src={imageUrl}
-          alt={imageAlt}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center opacity-65"
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster={posterUrl}
+          src={videoUrl}
+          aria-hidden={true}
+          className="absolute inset-0 h-full w-full object-cover object-center opacity-65"
         />
       </div>
 

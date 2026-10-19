@@ -51,8 +51,9 @@ There is no separate navbar, breadcrumb, or page-header component. Each homepage
 | PhilosophySection | `components/home/PhilosophySection.tsx` | Sanctuary philosophy and pillars | Implemented |
 | ExperienceSection | `components/home/ExperienceSection.tsx` | Service cards with price and booking link | Implemented |
 | DailyRhythmSection | `components/home/DailyRhythmSection.tsx` | Daily schedule at the sanctuary | Implemented |
-| PurposeSection | `components/home/PurposeSection.tsx` | Rescue impact and founder note on the homepage | Implemented |
-| TestimonialsSection | `components/home/TestimonialsSection.tsx` | Staff-authored parent quotes | Implemented |
+| PurposeSection | `components/home/PurposeSection.tsx` | Purpose statement, mission link, and sanctuary photos | Implemented |
+| TestimonialsSection | `components/home/TestimonialsSection.tsx` | One parent quote at a time, with photo | Implemented |
+| InstagramSection | `components/home/InstagramSection.tsx` | Scroll-driven photo row. Photos and the Instagram link come from the Homepage global | Implemented |
 | FaqSection | `components/home/FaqSection.tsx` | Expandable questions and answers | Implemented |
 | BookingBanner | `components/home/BookingBanner.tsx` | Closing invitation to the services section or the phone line | Implemented |
 

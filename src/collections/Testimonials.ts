@@ -4,7 +4,7 @@ export const Testimonials: CollectionConfig = {
   slug: 'testimonials',
   admin: {
     useAsTitle: 'ownerName',
-    defaultColumns: ['ownerName', 'petName', 'rating', 'order'],
+    defaultColumns: ['ownerName', 'petName', 'order'],
   },
   access: {
     read: () => true,
@@ -24,28 +24,9 @@ export const Testimonials: CollectionConfig = {
       },
     },
     {
-      name: 'initials',
-      type: 'text',
-      admin: {
-        description: 'Avatar initials (e.g. RS, AK, TM). If blank, generated from owner name.',
-      },
-    },
-    {
-      name: 'rating',
-      type: 'number',
-      min: 1,
-      max: 5,
-      defaultValue: 5,
-    },
-    {
       name: 'quote',
       type: 'textarea',
       required: true,
-    },
-    {
-      name: 'avatar',
-      type: 'upload',
-      relationTo: 'media',
     },
     {
       name: 'photo',

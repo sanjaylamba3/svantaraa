@@ -1,13 +1,18 @@
 'use client'
 
 import React, { useState } from 'react'
-import { IconChevronDown } from '@tabler/icons-react'
+import Link from 'next/link'
+import { IconPlus } from '@tabler/icons-react'
+import { buttonVariants } from '@/components/ui/button'
+import { cn } from 'cn'
 import type { Faq } from '@/payload-types'
 
 interface FaqSectionProps {
   overline?: string
   heading?: string
   description?: string
+  ctaText?: string
+  ctaLink?: string
   faqs?: Faq[]
 }
 
@@ -47,9 +52,10 @@ const defaultFaqs: FallbackFaq[] = [
 type FaqItem = Faq | FallbackFaq
 
 export function FaqSection({
-  overline = 'Resident Protocol',
-  heading = 'Frequently Addressed Inquiries',
-  description = 'Every protocol is established to ensure maximum immunity, emotional safety, and harmony across the retreat.',
+  heading = 'Got Questions?',
+  description = 'Everything you need to know ahead of your visit.',
+  ctaText = 'All FAQs',
+  ctaLink = '#faq-section',
   faqs,
 }: FaqSectionProps) {
   const items: FaqItem[] = faqs && faqs.length > 0 ? faqs : defaultFaqs
@@ -60,59 +66,68 @@ export function FaqSection({
   }
 
   return (
-    <section className="w-full bg-muted/40 py-20 md:py-24" id="faq-section">
-      <div className="w-full max-w-3xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12">
-          <span className="text-xs uppercase tracking-[0.24em] text-forest font-semibold">
-            {overline}
-          </span>
-          <h2 className="font-serif text-3xl sm:text-4xl text-foreground mt-1">{heading}</h2>
-          <p className="text-sm sm:text-base text-muted-foreground mt-2 leading-relaxed">
-            {description}
-          </p>
-        </div>
-
-        <div className="flex flex-col gap-3">
-            {items.map((item, idx) => {
-              const isOpen = openIndex === idx
-              const panelId = `faq-panel-${item.id ?? idx}`
-              const triggerId = `faq-trigger-${item.id ?? idx}`
-
-              return (
-                <div
-                  key={item.id ?? idx}
-                  className="bg-card text-card-foreground rounded-2xl overflow-hidden shadow-xs border border-border transition-all"
-                >
-                  <button
-                    type="button"
-                    id={triggerId}
-                    onClick={() => toggle(idx)}
-                    aria-expanded={isOpen}
-                    aria-controls={panelId}
-                    className="w-full px-6 py-5 text-left flex items-center justify-between gap-4 font-serif text-lg sm:text-xl text-foreground hover:text-forest transition-colors cursor-pointer"
-                  >
-                    <span className="font-medium leading-snug">{item.question}</span>
-                    <IconChevronDown
-                      className={`size-5 shrink-0 text-muted-foreground transition-transform duration-200 ${
-                        isOpen ? 'rotate-180' : ''
-                      }`}
-                      aria-hidden
-                    />
-                  </button>
-
-                  <div
-                    id={panelId}
-                    role="region"
-                    aria-labelledby={triggerId}
-                    hidden={!isOpen}
-                    className="px-6 pb-5 pt-0 text-sm text-muted-foreground leading-relaxed"
-                  >
-                    {item.answer}
-                  </div>
-                </div>
-              )
-            })}
+    <section className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 md:py-24 lg:px-8" id="faq-section">
+      <div className="rounded-[2rem] bg-sand px-6 py-10 sm:px-10 sm:py-14 lg:px-14 lg:py-16">
+        <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-16">
+          <div className="flex flex-col items-start gap-5 lg:col-span-4 lg:pt-2">
+            <h2 className="font-heading text-4xl font-semibold uppercase leading-[0.95] tracking-tight text-forest sm:text-5xl">
+              {heading}
+            </h2>
+            <p className="max-w-xs text-sm leading-relaxed text-muted-foreground sm:text-base">
+              {description}
+            </p>
+            <Link
+              href={ctaLink}
+              className={cn(
+                buttonVariants({ variant: 'default', size: 'lg' }),
+                'mt-2 rounded-full bg-forest px-6 text-sm font-semibold text-ivory hover:bg-forest/90',
+              )}
+            >
+              {ctaText}
+            </Link>
           </div>
+
+          <div className="lg:col-span-8">
+            <ul className="border-t border-border">
+              {items.map((item, idx) => {
+                const isOpen = openIndex === idx
+                const panelId = `faq-panel-${item.id ?? idx}`
+                const triggerId = `faq-trigger-${item.id ?? idx}`
+
+                return (
+                  <li key={item.id ?? idx} className="border-b border-border">
+                    <button
+                      type="button"
+                      id={triggerId}
+                      onClick={() => toggle(idx)}
+                      aria-expanded={isOpen}
+                      aria-controls={panelId}
+                      className="flex w-full cursor-pointer items-center justify-between gap-6 py-5 text-left font-sans text-sm font-medium text-forest transition-colors hover:text-forest/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:text-base"
+                    >
+                      <span className="leading-snug">{item.question}</span>
+                      <IconPlus
+                        className={`size-4 shrink-0 transition-transform duration-200 ${
+                          isOpen ? 'rotate-45' : ''
+                        }`}
+                        aria-hidden
+                      />
+                    </button>
+
+                    <div
+                      id={panelId}
+                      role="region"
+                      aria-labelledby={triggerId}
+                      hidden={!isOpen}
+                      className="max-w-2xl pb-5 text-sm leading-relaxed text-muted-foreground"
+                    >
+                      {item.answer}
+                    </div>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
   )

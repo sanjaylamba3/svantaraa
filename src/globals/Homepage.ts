@@ -16,18 +16,12 @@ export const Homepage: GlobalConfig = {
           label: 'Hero',
           fields: [
             {
-              name: 'heroBadge',
-              type: 'text',
-            },
-            {
               name: 'heroHeadline',
               type: 'text',
-              required: true,
             },
             {
               name: 'heroDescription',
               type: 'textarea',
-              required: true,
             },
             {
               name: 'heroPrimaryCtaText',
@@ -46,9 +40,24 @@ export const Homepage: GlobalConfig = {
               type: 'text',
             },
             {
+              name: 'heroVideo',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description:
+                  'Background video loop for the hero. Leave empty to use the built-in sanctuary clip.',
+              },
+              filterOptions: {
+                mimeType: { contains: 'video' },
+              },
+            },
+            {
               name: 'heroImage',
               type: 'upload',
               relationTo: 'media',
+              admin: {
+                description: 'Poster image shown while the hero video loads.',
+              },
             },
             {
               name: 'heroDefaultImageUrl',
@@ -66,7 +75,6 @@ export const Homepage: GlobalConfig = {
             {
               name: 'philosophyQuote',
               type: 'textarea',
-              required: true,
             },
             {
               name: 'philosophyDescription',
@@ -187,18 +195,6 @@ export const Homepage: GlobalConfig = {
               type: 'textarea',
             },
             {
-              name: 'founderTitle',
-              type: 'text',
-            },
-            {
-              name: 'founderName',
-              type: 'text',
-            },
-            {
-              name: 'founderRole',
-              type: 'text',
-            },
-            {
               name: 'founderPhoto',
               type: 'upload',
               relationTo: 'media',
@@ -208,13 +204,12 @@ export const Homepage: GlobalConfig = {
               type: 'text',
             },
             {
-              name: 'purposeMetrics',
-              type: 'array',
-              fields: [
-                { name: 'value', type: 'text', required: true },
-                { name: 'label', type: 'text' },
-                { name: 'description', type: 'textarea', required: true },
-              ],
+              name: 'purposeMetricValue',
+              type: 'text',
+            },
+            {
+              name: 'purposeMetricDescription',
+              type: 'textarea',
             },
             {
               name: 'purposeCtaText',
@@ -224,9 +219,52 @@ export const Homepage: GlobalConfig = {
               name: 'purposeCtaLink',
               type: 'text',
             },
+          ],
+        },
+        {
+          label: 'Instagram',
+          fields: [
             {
-              name: 'purposeFootnote',
+              name: 'instagramOverline',
               type: 'text',
+            },
+            {
+              name: 'instagramHeading',
+              type: 'text',
+            },
+            {
+              name: 'instagramCtaLabel',
+              type: 'text',
+            },
+            {
+              name: 'instagramUrl',
+              type: 'text',
+              admin: {
+                description: 'Profile URL opened by the Instagram button. Leave empty to use the built-in link.',
+              },
+            },
+            {
+              name: 'instagramPhotos',
+              type: 'array',
+              labels: {
+                singular: 'Photo',
+                plural: 'Photos',
+              },
+              admin: {
+                description:
+                  'Photos slide in this order. Leave empty to use the built-in sanctuary photos. Card shapes stay in the design.',
+              },
+              fields: [
+                {
+                  name: 'image',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                  filterOptions: {
+                    mimeType: { contains: 'image' },
+                  },
+                },
+              ],
             },
           ],
         },

@@ -156,7 +156,7 @@ export interface User {
   collection: 'users';
 }
 /**
- * Image and asset gallery used across properties, experiences, and pages.
+ * Images and videos used across properties, experiences, and pages (including hero background clips).
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
@@ -258,13 +258,7 @@ export interface Testimonial {
    * e.g. Parents of Bruno • 4-Year Golden Retriever
    */
   petName: string;
-  /**
-   * Avatar initials (e.g. RS, AK, TM). If blank, generated from owner name.
-   */
-  initials?: string | null;
-  rating?: number | null;
   quote: string;
-  avatar?: (number | null) | Media;
   /**
    * Photo of the pet, shown on the testimonial card.
    */
@@ -490,10 +484,7 @@ export interface ServicesSelect<T extends boolean = true> {
 export interface TestimonialsSelect<T extends boolean = true> {
   ownerName?: T;
   petName?: T;
-  initials?: T;
-  rating?: T;
   quote?: T;
-  avatar?: T;
   photo?: T;
   defaultPhotoUrl?: T;
   order?: T;
@@ -558,17 +549,23 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Homepage {
   id: number;
-  heroBadge?: string | null;
-  heroHeadline: string;
-  heroDescription: string;
+  heroHeadline?: string | null;
+  heroDescription?: string | null;
   heroPrimaryCtaText?: string | null;
   heroPrimaryCtaLink?: string | null;
   heroSecondaryCtaText?: string | null;
   heroSecondaryCtaLink?: string | null;
+  /**
+   * Background video loop for the hero. Leave empty to use the built-in sanctuary clip.
+   */
+  heroVideo?: (number | null) | Media;
+  /**
+   * Poster image shown while the hero video loads.
+   */
   heroImage?: (number | null) | Media;
   heroDefaultImageUrl?: string | null;
   philosophyOverline?: string | null;
-  philosophyQuote: string;
+  philosophyQuote?: string | null;
   philosophyDescription?: string | null;
   philosophyPillars?:
     | {
@@ -606,22 +603,28 @@ export interface Homepage {
   purposeBadge?: string | null;
   purposeHeading?: string | null;
   purposeNarrative?: string | null;
-  founderTitle?: string | null;
-  founderName?: string | null;
-  founderRole?: string | null;
   founderPhoto?: (number | null) | Media;
   founderDefaultPhotoUrl?: string | null;
-  purposeMetrics?:
+  purposeMetricValue?: string | null;
+  purposeMetricDescription?: string | null;
+  purposeCtaText?: string | null;
+  purposeCtaLink?: string | null;
+  instagramOverline?: string | null;
+  instagramHeading?: string | null;
+  instagramCtaLabel?: string | null;
+  /**
+   * Profile URL opened by the Instagram button. Leave empty to use the built-in link.
+   */
+  instagramUrl?: string | null;
+  /**
+   * Photos slide in this order. Leave empty to use the built-in sanctuary photos. Card shapes stay in the design.
+   */
+  instagramPhotos?:
     | {
-        value: string;
-        label?: string | null;
-        description: string;
+        image: number | Media;
         id?: string | null;
       }[]
     | null;
-  purposeCtaText?: string | null;
-  purposeCtaLink?: string | null;
-  purposeFootnote?: string | null;
   bookingBadge?: string | null;
   bookingHeading?: string | null;
   bookingDescription?: string | null;
@@ -654,13 +657,13 @@ export interface SiteFooter {
  * via the `definition` "homepage_select".
  */
 export interface HomepageSelect<T extends boolean = true> {
-  heroBadge?: T;
   heroHeadline?: T;
   heroDescription?: T;
   heroPrimaryCtaText?: T;
   heroPrimaryCtaLink?: T;
   heroSecondaryCtaText?: T;
   heroSecondaryCtaLink?: T;
+  heroVideo?: T;
   heroImage?: T;
   heroDefaultImageUrl?: T;
   philosophyOverline?: T;
@@ -699,22 +702,22 @@ export interface HomepageSelect<T extends boolean = true> {
   purposeBadge?: T;
   purposeHeading?: T;
   purposeNarrative?: T;
-  founderTitle?: T;
-  founderName?: T;
-  founderRole?: T;
   founderPhoto?: T;
   founderDefaultPhotoUrl?: T;
-  purposeMetrics?:
-    | T
-    | {
-        value?: T;
-        label?: T;
-        description?: T;
-        id?: T;
-      };
+  purposeMetricValue?: T;
+  purposeMetricDescription?: T;
   purposeCtaText?: T;
   purposeCtaLink?: T;
-  purposeFootnote?: T;
+  instagramOverline?: T;
+  instagramHeading?: T;
+  instagramCtaLabel?: T;
+  instagramUrl?: T;
+  instagramPhotos?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
   bookingBadge?: T;
   bookingHeading?: T;
   bookingDescription?: T;

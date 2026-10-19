@@ -206,3 +206,33 @@
     @apply font-sans;
   }
 }
+
+/* Scroll position drives the shift. Reduced motion drops the pin so the page never sticks. */
+.instagram-track {
+  --instagram-shift: 78vw;
+  transform: translate3d(var(--instagram-shift), 0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .instagram-stage {
+    height: auto;
+  }
+
+  .instagram-sticky {
+    position: static;
+    height: auto;
+  }
+
+  .instagram-track {
+    transform: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: min(100%, 72rem);
+    margin-inline: auto;
+    padding-bottom: 4rem;
+  }
+
+  .instagram-edge {
+    display: none;
+  }
+}
