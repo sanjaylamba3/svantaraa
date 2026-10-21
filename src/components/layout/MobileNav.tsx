@@ -1,16 +1,12 @@
 'use client'
 
-import React, { useState } from 'react'
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet'
+import { useState } from 'react'
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
 import { IconMenu2, IconPhone } from '@tabler/icons-react'
 import { DEFAULT_PHONE, primaryNavLinks } from '@/lib/site'
+import { Link } from '@payloadcms/ui'
+import Image from 'next/image'
 
 interface MobileNavProps {
   phone?: string
@@ -41,16 +37,30 @@ export function MobileNav({ phone = DEFAULT_PHONE }: MobileNavProps) {
         </SheetTrigger>
         <SheetContent side="right" className="w-[300px] p-6 flex flex-col justify-between">
           <div>
-            <SheetHeader className="text-left border-b border-border/50 pb-4 mb-6">
+            <SheetHeader className="text-left border-b border-border/50 pl-0 mb-4">
               <SheetTitle className="font-serif text-2xl tracking-[0.14em] uppercase">
-                Svantaraa
+                <div className="flex items-start justify-start select-none py-1">
+                  <Link href="/" className="flex items-center group" aria-current="page">
+                    <Image
+                      src="/Svantaraa Logo tm.png"
+                      alt="Svantaraa - Luxury Pet Retreat"
+                      width={778}
+                      height={104}
+                      priority
+                      className="w-60 h-auto transition-opacity group-hover:opacity-90 dark:brightness-0 dark:invert"
+                    />
+                  </Link>
+                </div>
               </SheetTitle>
-              <span className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground font-medium">
-                Luxury Pet Retreat
+              <span className="text-[10px] tracking-[0.2em] uppercase text-champagne font-medium">
+              Sanctuary of Conscious Care
               </span>
             </SheetHeader>
 
-            <nav className="flex flex-col gap-4 text-sm font-medium tracking-wider uppercase" aria-label="Primary">
+            <nav
+              className="flex flex-col gap-4 text-sm font-medium tracking-wider uppercase"
+              aria-label="Primary"
+            >
               {primaryNavLinks.map((link) => (
                 <a
                   key={link.href}

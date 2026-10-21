@@ -1,4 +1,3 @@
-import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
@@ -37,7 +36,7 @@ export function Header({ phone = DEFAULT_PHONE }: HeaderProps) {
         <div className="flex items-center justify-center select-none py-1">
           <Link href="/" className="flex items-center group" aria-current="page">
             <Image
-              src="/Svantaraa Logo Final.png"
+              src="/Svantaraa Logo tm.png"
               alt="Svantaraa - Luxury Pet Retreat"
               width={778}
               height={104}
@@ -49,9 +48,7 @@ export function Header({ phone = DEFAULT_PHONE }: HeaderProps) {
 
         <div className="flex items-center justify-end gap-3 flex-1">
           <a href="#reserve-concierge" className="hidden sm:inline-flex">
-            <Button
-              className="rounded-full px-6 py-2.5 text-xs tracking-[0.14em] uppercase font-semibold shadow-sm"
-            >
+            <Button className="rounded-full px-6 py-2.5 text-xs tracking-[0.14em] uppercase font-semibold shadow-sm">
               Book Now
             </Button>
           </a>

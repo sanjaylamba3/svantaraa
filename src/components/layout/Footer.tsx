@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { IconMapPin, IconPhone } from '@tabler/icons-react'
+import { IconArrowRight, IconMapPin, IconPhone } from '@tabler/icons-react'
 import Image from 'next/image'
 import { DEFAULT_PHONE } from '@/lib/site'
 
@@ -13,11 +13,11 @@ interface FooterProps {
   hoursDogPark?: string
 }
 
-const columnTitle =
-  'text-xs font-semibold uppercase tracking-[0.2em] text-champagne'
+const columnLabel =
+  'text-[10px] font-semibold uppercase tracking-[0.28em] text-champagne'
 
-const linkFocus =
-  'rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-forest'
+const footerLink =
+  'group inline-flex items-center gap-3 border-b border-transparent py-1 text-sm text-mist transition-colors duration-200 hover:border-champagne/60 hover:text-ivory focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-espresso motion-reduce:transition-none'
 
 export function Footer({
   brandTagline = 'Sanctuary of Conscious Care',
@@ -31,110 +31,143 @@ export function Footer({
   const phoneHref = `tel:${phone.replace(/\s+/g, '')}`
 
   return (
-    <footer className="w-full overflow-x-hidden bg-forest text-ivory">
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-10">
-        <div
-          className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8 lg:divide-x lg:divide-ivory/10"
-        >
-          <div className="flex flex-col gap-4 lg:pr-8">
-            <span className={columnTitle}>Sanctuary</span>
-            <p className="text-[10px] tracking-[0.22em] text-champagne uppercase font-semibold">
+    <footer className="w-full overflow-x-hidden bg-espresso text-ivory">
+      <div className="border-t border-champagne/25">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pb-8 pt-16 md:pb-10 md:pt-20 lg:pt-24">
+          <div className="flex flex-col items-center text-center">
+            <Link
+              href="/"
+              className="inline-flex transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-espresso"
+            >
+              <Image
+                src="/Svantaraa Logo tm.png"
+                alt="Svantaraa - Luxury Pet Retreat"
+                width={778}
+                height={104}
+                className="h-8 w-auto object-contain brightness-0 invert sm:h-9"
+              />
+            </Link>
+            <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.28em] text-champagne">
               {brandTagline}
             </p>
-            <p className="text-sm leading-relaxed text-ivory/80">{brandBio}</p>
+            <div className="mt-8 flex w-full max-w-xs items-center gap-4 sm:max-w-sm" aria-hidden>
+              <span className="h-px flex-1 bg-border-dark" />
+              <span className="size-1 rotate-45 bg-champagne/80" />
+              <span className="h-px flex-1 bg-border-dark" />
+            </div>
+            <p className="mt-8 max-w-lg text-sm font-light leading-relaxed text-mist">{brandBio}</p>
           </div>
 
-          <div className="flex flex-col gap-4 lg:px-8">
-            <span className={columnTitle}>Visit</span>
-            <div className="flex flex-col gap-3 text-sm text-ivory/80">
-              <div className="flex items-start gap-2.5">
-                <IconMapPin className="size-4 shrink-0 text-champagne mt-0.5" aria-hidden />
-                <span>{address}</span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <IconPhone className="size-4 shrink-0 text-champagne" aria-hidden />
-                <a
-                  href={phoneHref}
-                  className={`hover:text-ivory ${linkFocus}`}
-                >
-                  {phone}
-                </a>
+          <div
+            className="mt-14 grid grid-cols-1 gap-12 md:mt-16 md:grid-cols-3 md:gap-0 md:divide-x md:divide-border-dark"
+          >
+            <div className="flex flex-col items-center text-center md:px-8 lg:px-10">
+              <span className={columnLabel}>Operating Hours</span>
+              <dl className="mt-6 w-full max-w-xs space-y-5 text-sm">
+                <div>
+                  <dt className="text-xs font-medium uppercase tracking-wider text-ivory">
+                    Boarding Check-In & Pick-Up
+                  </dt>
+                  <dd className="mt-1.5 whitespace-pre-line text-xs font-light leading-relaxed text-mist">
+                    {hoursBoarding}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-xs font-medium uppercase tracking-wider text-ivory">
+                    Daycare Retreat
+                  </dt>
+                  <dd className="mt-1.5 text-xs font-light text-mist">{hoursDaycare}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs font-medium uppercase tracking-wider text-ivory">
+                    Dog Park Visits
+                  </dt>
+                  <dd className="mt-1.5 text-xs font-light text-mist">{hoursDogPark}</dd>
+                </div>
+              </dl>
+            </div>
+
+            <div className="flex flex-col items-center text-center md:px-8 lg:px-10">
+              <span className={columnLabel}>Explore</span>
+              <nav className="mt-6 flex flex-col items-center gap-4" aria-label="Footer">
+                <Link href="/about" className={footerLink}>
+                  <span className="text-xs font-semibold uppercase tracking-[0.18em]">About Us</span>
+                  <IconArrowRight
+                    className="size-3.5 text-champagne opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:opacity-100 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
+                    aria-hidden
+                  />
+                </Link>
+                <Link href="/contact" className={footerLink}>
+                  <span className="text-xs font-semibold uppercase tracking-[0.18em]">Contact Us</span>
+                  <IconArrowRight
+                    className="size-3.5 text-champagne opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:opacity-100 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
+                    aria-hidden
+                  />
+                </Link>
+              </nav>
+            </div>
+
+            <div className="flex flex-col items-center text-center md:px-8 lg:px-10">
+              <span className={columnLabel}>Visit</span>
+              <div className="mt-6 flex max-w-xs flex-col gap-5 text-sm font-light text-mist">
+                <div className="flex flex-col items-center gap-2">
+                  <IconMapPin className="size-4 text-champagne" aria-hidden />
+                  <span className="leading-relaxed">{address}</span>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <IconPhone className="size-4 text-champagne" aria-hidden />
+                  <a
+                    href={phoneHref}
+                    className="border-b border-transparent tracking-wide transition-colors duration-200 hover:border-champagne/60 hover:text-ivory focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-espresso motion-reduce:transition-none"
+                  >
+                    {phone}
+                  </a>
+                </div>
               </div>
             </div>
           </div>
-
-          <div className="flex flex-col gap-4 lg:px-8">
-            <span className={columnTitle}>Operating Hours</span>
-            <div className="flex flex-col gap-4 text-sm">
-              <div>
-                <span className="block text-xs font-semibold uppercase tracking-wider text-ivory">
-                  Boarding Check-In & Pick-Up
-                </span>
-                <span className="mt-1 block whitespace-pre-line text-xs text-ivory/70">
-                  {hoursBoarding}
-                </span>
-              </div>
-              <div>
-                <span className="block text-xs font-semibold uppercase tracking-wider text-ivory">
-                  Daycare Retreat
-                </span>
-                <span className="mt-1 block text-xs text-ivory/70">{hoursDaycare}</span>
-              </div>
-              <div>
-                <span className="block text-xs font-semibold uppercase tracking-wider text-ivory">
-                  Dog Park Visits
-                </span>
-                <span className="mt-1 block text-xs text-ivory/70">{hoursDogPark}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-4 lg:pl-8">
-            <span className={columnTitle}>Explore</span>
-            <nav className="flex flex-col gap-2 text-sm text-ivory/80" aria-label="Footer">
-              <Link href="/about" className={`hover:text-ivory ${linkFocus}`}>
-                About Us
-              </Link>
-              <Link href="/contact" className={`hover:text-ivory ${linkFocus}`}>
-                Contact Us
-              </Link>
-            </nav>
-          </div>
         </div>
 
-        <div
-          className="mt-12 flex flex-col gap-4 border-t border-ivory/10 pt-8 text-xs text-ivory/70 md:flex-row md:items-center md:justify-between"
-        >
-          <span className="text-center md:text-left">
-            © 2026 Svantaraa Pet Retreat. All sanctuary rights reserved.
-          </span>
-          <div className="flex justify-center gap-4 md:justify-end md:gap-6">
-            <Link href="/privacy" className={`hover:text-ivory ${linkFocus}`}>
-              Privacy Policy
-            </Link>
-            <Link href="/terms" className={`hover:text-ivory ${linkFocus}`}>
-              Terms of Service
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      <div className="relative w-full overflow-hidden border-t border-champagne/15 bg-espresso">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="border-t border-border-dark px-4 py-10 sm:px-6 md:py-12 lg:px-8">
           <Link
             href="/"
-            className="block py-6 leading-none transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-espresso sm:py-8 md:py-10"
+            className="mx-auto block w-full max-w-xl transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-espresso sm:max-w-2xl md:max-w-3xl"
             aria-label="Svantaraa home"
           >
             <Image
-              src="/Svantaraa Logo Final.png"
+              src="/Svantaraa Logo tm.png"
               alt=""
               width={778}
               height={104}
-              sizes="(max-width: 1280px) 100vw, 1280px"
-              className="mx-auto h-auto w-full max-w-full object-contain object-center brightness-0 invert opacity-90 transition-opacity motion-reduce:transition-none"
+              sizes="(max-width: 768px) 85vw, 768px"
+              className="mx-auto h-auto w-full object-contain brightness-0 invert opacity-[0.35] transition-opacity duration-200 motion-reduce:transition-none"
             />
           </Link>
+        </div>
+
+        <div className="border-t border-border-dark/80 px-4 pb-10 pt-8 sm:px-6 lg:px-8">
+          <div
+            className="mx-auto flex w-full max-w-7xl flex-col items-center gap-5 text-center text-[11px] uppercase tracking-[0.12em] text-mist sm:flex-row sm:justify-between sm:text-left"
+          >
+            <span className="font-light normal-case tracking-normal">
+              © 2026 Svantaraa Pet Retreat. All sanctuary rights reserved.
+            </span>
+            <div className="flex items-center gap-6">
+              <Link
+                href="/privacy"
+                className="transition-colors hover:text-ivory focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-espresso"
+              >
+                Privacy Policy
+              </Link>
+              <span className="text-border-dark" aria-hidden>·</span>
+              <Link
+                href="/terms"
+                className="transition-colors hover:text-ivory focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-espresso"
+              >
+                Terms of Service
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
